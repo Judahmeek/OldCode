@@ -1,0 +1,7 @@
+Add Constructor(Record), equals(), and hashcode() to every entity
+Add composition of objects to records
+backgrounds events
+game time
+loading
+saving
+event manager

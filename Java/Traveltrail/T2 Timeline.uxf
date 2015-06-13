@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>8</zoom_level>
+  <element>
+    <type>com.umlet.element.custom.InitialState</type>
+    <coordinates>
+      <x>432</x>
+      <y>296</y>
+      <w>16</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>i</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>416</x>
+      <y>288</y>
+      <w>40</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>24;48;24;24</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>336</y>
+      <w>88</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>TravelTrail
+--
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>336</y>
+      <w>128</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>DatabaseCommunicator
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>704</x>
+      <y>336</y>
+      <w>64</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>ioManager</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>264</x>
+      <y>536</y>
+      <w>168</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Party
+--
+19 create a list of all skills for target race
+20 For each customPC:
+	if more than 1 race, display list of playable races  and ask user to pick race.
+ 	Dependant on race:
+	 display age range and ask user to pick age.
+	 display mass range and ask user to pick mass.
+	 display list of genders and ask user to pick gender.
+	 display list of party positions and ask user to pick a position.
+	 display list of personalities and ask user to pick a personality.
+	 display list of occupations and ask user to pick an occupation.
+	 display list of skills, their starting values, and whatever "free" points the user gets.
+	 enable user to make changes and use points.
+	 display list of starting status and ask user to pick a position.
+	 display list of relationships and ask user to pick the relationships between party members. (Can be    made random or based on other factors)
+query User for choices for starting location.
+verify user input is a valid starting location.
+assign party "starting" status</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>632</x>
+      <y>136</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>eventManager
+--
+scan(arrivalEventPool, id)
+	check if pool exists
+	 if not, check location type (route or location)
+	 	pool all events applicable  to that location
+	Remove resolved unique events from pool
+	Remove Prioritized events from pool and place in event queue
+	Calculate probability of prioritized events, test probabilities, resolve eventif  successful,  if resolved and unique, update unique event history
+	Randomly select and calculate probability, test probabilities, resolve eventif  successful, and discard after use until every event is tested, if resolved and  unique, update unique event history
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>216</x>
+      <y>304</y>
+      <w>218</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+&lt; 1.) Instantiate
+&lt; 3b.) Query trails
+Query Result &gt;
+&lt; 4a.) Query saveRecord(saveId) &gt;
+Query Result &gt;
+&lt; 5b.) Query [trail].start
+Query Result &gt;</panel_attributes>
+    <additional_attributes>184;40;48;40</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>464</x>
+      <y>304</y>
+      <w>256</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+1.) Instantiate &gt;
+2.) Load Save? &gt;
+&lt; Load Save? Fork:
+a = True, b = False
+3a.) Save ID? &gt;
+&lt; Save ID? Reply
+4b.) Query trail &gt;
+&lt; Query Result</panel_attributes>
+    <additional_attributes>24;40;240;40</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>320</x>
+      <y>336</y>
+      <w>160</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+5a.) party(partyRecord)
+6b.) party(startRow)</panel_attributes>
+    <additional_attributes>72;200;96;24</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>32</x>
+      <y>464</y>
+      <w>88</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>partyMember
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>88</x>
+      <y>448</y>
+      <w>200</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+&lt; 6a.) member(memberRecord)
+&lt; 8b.) member(trail)</panel_attributes>
+    <additional_attributes>32;24;176;96</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>408</x>
+      <y>376</y>
+      <w>312</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+7b.) Party Creation Queries &gt;
+&lt; Query Responses</panel_attributes>
+    <additional_attributes>24;200;296;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>432</x>
+      <y>128</y>
+      <w>224</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;
+Sync: eventManager(startingLocation)</panel_attributes>
+    <additional_attributes>32;208;200;24</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>776</x>
+      <y>136</y>
+      <w>128</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Prioritized Arrival Events
+elementstyle=autoresize</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>816</x>
+      <y>136</y>
+      <w>40</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>24;48;24;24</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>776</x>
+      <y>184</y>
+      <w>128</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>General Arrival Events
+elementstyle=autoresize</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

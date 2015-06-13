@@ -1,0 +1,148 @@
+Events cover any kind of action: arriving at a planet, meeting a person, looking at a city, buying food, combat, etc...
+
+To do:
+Figure out how and when each class is instantiated
+Figure out how and when database records are translated
+Figure out how to enable events to display game variables dynamically in a string
+Figure out how adding a time element will fuck with everything
+
+identify objects involved in successful conditions
+
+resolveEvent(){
+displayScenario()
+if(input != NULL)
+ request(input)
+calculateEffects()
+}
+
+Aggregate Functions:
+ AVG() - Returns the average value
+ MAX() - Returns the largest value
+ MIN() - Returns the smallest value
+ SUM() - Returns the sum
+
+Conditional Operators:
+ >
+ <
+ =
+ <=
+ >=
+ (bool) OR AND XOR NOT(bool)
+
+Conditional Nouns:
+arrival
+departure
+converse(arg)
+partyMember.named(arg)
+ health
+ skill.value
+ relationship.status
+ race
+ status
+ mass
+ stat
+ position
+ personality
+party:
+ size
+ avg of stats
+ sum of stats
+ funds
+ position: filled or empty
+ int random quests
+ int random items
+int random members with:
+ health
+ agg(health)
+ skill.value
+ agg(skill.value)
+ int random relationship.status
+ race
+ status
+ mass
+ avg(mass)
+ stat
+ position
+ personality
+vehicle.named(arg)
+int random vehicles with:
+ mass
+ chassis
+ propulsion
+ power
+ seats
+ storage
+ xUnit
+  health
+  status
+ int random xUnits
+xUnit.ided(arg)
+
+Base success:
+Conditions improve or decrease chance of success
+
+User Input Functions:
+
+request memberName()
+request memberPosition()
+request vehicleID()
+request vehicleName()
+request unitID()
+request location()
+request item()
+request integer(range)
+
+Effect Nouns:
+individual member
+ health
+ skill.value
+ relationship.status
+ race
+ status
+ mass
+ stat
+ position
+ personality
+Party
+ location
+ funds
+ quests
+ items
+int random members:
+ health
+ skill.value
+ relationship.status
+ race
+ status
+ mass
+ stat
+ personality
+Vehicle
+ status
+ xUnit
+  health
+  status
+ int random xUnits
+
+Effect Verbs
+ teleport party to x
+ increase member's x skill by int
+ decrease member's x skill by int
+ increase object's stat by int
+ decrease object's stat by int
+ remove unit
+ add unit
+ remove member
+ add member
+ change relationship with member.name to x
+ change race to x
+ add status/quest
+ remove status/quest
+ change mass to x
+ assign position x
+ retract position x
+ change personality to x
+ add item
+ remove item
+ call event #x varargs
+ add partyMember #x

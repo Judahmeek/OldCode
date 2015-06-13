@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>345</x>
+      <y>175</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>TravelTrail
+--
++ingameTime: int
+--
++main(): void
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>135</y>
+      <w>125</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>DatabaseCommunicator
+--
+-connection: Connection = null;
+-statement: Statement = null;
+-preparedStatement: PreparedStatement = null;
+-resultSet: ResultSet = null;
+--
++createConnection(): void
++queryDatabase(in query: string): resultSet
++writeDatabase(in statement: string): void
++closeConnection(in connection: connection): void
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>250</y>
+      <w>105</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>Party
+--
+-location: int
+-funds: int
+-statuses: vector(status)
+-storage: vector(item)
+-positions: vector(string)
+-members: vector(partyMember)
+-vehicles: vector(vehicle)
+--
++navigate(in: location):void
++depart(in: location):void
++arrive(in: location):void
+--
+Responsibilities
+- Represents the user's group of characters
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>105</x>
+      <y>250</y>
+      <w>125</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>partyMember
+--
+-name: string
+-age: small_int
+-gender: string
+-position: string
+-occupation: string
+-relationships: vector(relationship)
+-skills: vector(skill)
+-race: string
+-mass: small_int
+-status: vector(string)
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>455</x>
+      <y>260</y>
+      <w>105</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>eventManager
+--
+-events: vector(Event)
+-eventPools: vector(eventPool)
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>685</x>
+      <y>250</y>
+      <w>115</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Interpreter
+--
+
+--
++interpret(in x: vector(eventRecord)): void
+--
+Responsibilities
+-transforms eventRecords into events
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>245</x>
+      <y>370</y>
+      <w>140</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Vehicle
+--
+-name: string
+-model: string
+-avgPrice: int
+-power: int
+-speed: int
+-status: vector(string)
+-attachedItems: vector(Item)
+
+--
++setStats(): void
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>150</y>
+      <w>130</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>User I/O
+--
+
+--
++getDynamicContent(in content: vector(string)): void
++displayString(in string): void
++displayMenu(in menu):void
++requestString(in request: string): string
++requestInteger(in request: string): int
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>295</x>
+      <y>165</y>
+      <w>59</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+initializes</panel_attributes>
+    <additional_attributes>15;25;50;25</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>435</x>
+      <y>165</y>
+      <w>74</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+initializes</panel_attributes>
+    <additional_attributes>65;25;15;25</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>545</x>
+      <y>330</y>
+      <w>80</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Event
+--
+-id: int
+-scenario: string
+-effects: vector(string)
+-conditions: vector(string)
+-priority: int
+--
++calculateProbability(): int
++resolveEvent(in arg: ): object
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>425</x>
+      <y>195</y>
+      <w>59</w>
+      <h>74</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+initializes</panel_attributes>
+    <additional_attributes>50;65;15;15</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>335</x>
+      <y>195</y>
+      <w>56</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+initializes</panel_attributes>
+    <additional_attributes>30;55;30;15</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>395</y>
+      <w>105</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Location
+--
+-status: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>470</y>
+      <w>105</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Route
+--
+-id: int
+-distance: int
+-links: vector(location)
+--
+
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>545</x>
+      <y>240</y>
+      <w>149</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+Composition: is-part-of</panel_attributes>
+    <additional_attributes>15;25;140;25</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>265</x>
+      <y>320</y>
+      <w>88</w>
+      <h>59</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>60;15;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>215</x>
+      <y>245</y>
+      <w>104</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>95;25;15;25</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>310</y>
+      <w>75</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>relationship
+--
++status: string
++partyMember: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>390</y>
+      <w>70</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>item
+--
++id: int
++name: string
++mass: int
++avgPrice: int
++sizeRequired: int
++description: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>15</x>
+      <y>225</y>
+      <w>65</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>skill
+--
++name: string
++value: int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>100</y>
+      <w>75</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>saveManager
+--
+
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>590</x>
+      <y>110</y>
+      <w>99</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+Composition: is-part-of</panel_attributes>
+    <additional_attributes>35;25;70;25</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>45</x>
+      <y>240</y>
+      <w>87</w>
+      <h>39</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>60;30;35;20</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>175</x>
+      <y>385</y>
+      <w>87</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>70;25;25;25</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>45</x>
+      <y>300</y>
+      <w>88</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>60;25;30;25</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>485</x>
+      <y>290</y>
+      <w>88</w>
+      <h>69</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>30;15;60;60</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>585</x>
+      <y>275</y>
+      <w>55</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>eventPool
+--
++location: int
++events: vector(events)
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>545</x>
+      <y>260</y>
+      <w>49</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*</panel_attributes>
+    <additional_attributes>15;15;40;35</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>570</x>
+      <y>300</y>
+      <w>59</w>
+      <h>39</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..*</panel_attributes>
+    <additional_attributes>50;15;15;30</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>695</x>
+      <y>220</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>tableCache
+--
++race: vector(race.row)
++vehicle: </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>65</y>
+      <w>75</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>scribe
+--
+(unique events and fun statistics)
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>370</x>
+      <y>320</y>
+      <w>88</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>25;15;65;75</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>475</x>
+      <y>360</y>
+      <w>88</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>20;35;20;25;45;25;45;45;35;45</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>75</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>TravelTrail</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>75</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>[static]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>90</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>.trails
+--
+id: int
+name: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>150</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>Unit complete
+--
+id: int
+type: string
+name: string
+size: int
+capacity: int
+avgPrice: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>135</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>event complete
+--
+location: int
+type: string
+unique: boolean
+priority: int
+category: string
+baseProbability: int
+probabilityConditions: conditions
+scenario: string
+input: string
+effects: effects</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>180</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>skill complete
+--
+id: int
+name: string
+race: string
+min: int
+max: int
+avg: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>165</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>item complete
+--
+id: int
+sizeRequired: int
+mass: int
+name: string
+avgPrice: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>90</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>start complete
+--
+minCustomPCs: int
+maxCustomPCs: int
+startingLocations: tokens</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>105</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>race complete
+--
+id: int
+name: string
+playable: boolean
+genders: tokens
+personalities: tokens
+relationships: tokens
+minAge: int
+maxAge: int
+minHeight: int
+maxHeight: int
+minMass: int
+maxMass: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>195</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>location complete
+--
+-id: int
+-links: tokens</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>120</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>vehicle complete
+--
+model: int
+avgPrice: int
+propulsionUnitCapacity: int
+powerUnitCapacity: int
+passengerUnitCapacity: int
+storageUnitCapacity: int
+armorUnitCapacity: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>265</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>[saveFile]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>150</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>Legend</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>165</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>tokens
+--
+A string that consists of identifiers
+separated by a common separator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>180</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>conditions
+--
+A string that provides rules for determining probability
+Syntax: [requirement/preventor](boolean expression) [+/-int](boolean expression)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>195</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>effects
+--
+A string that provides rules for determining the effects of an event
+Syntax: (conditions)[effect], [guaranteed effect]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>210</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>partyMember complete
+--
+-name: string
+-age: small_int
+-gender: string
+-position: string
+-occupation: string
+-personality: string
+-description: string
+-skills: vector(skill)
+-race: string
+-mass: small_int
+-status: vector(string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>280</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>vehicle
+--
+-name: string
+-model: string
+-status: vector(string)
+-armorUnits: vector(armorUnit)
+-propulsionUnits: vector(propulsionUnit)
+-powerUnits: vector(powerUnit)
+-passengerUnits: vector(passengerUnit)
+-storageUnits: vector(storageUnit)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>295</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>Party
+--
+-location: int
+-funds: int
+-statuses: vector(status)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>310</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>partyMember
+--
+-name: string
+-age: small_int
+-gender: string
+-position: string
+-occupation: string
+-personality: string
+-description: string
+-relationships: vector(relationship)
+-skills: vector(skill)
+-race: string
+-mass: small_int
+-status: vector(string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>325</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>eventFlags
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>665</x>
+      <y>335</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>eventFlags
+--
+-name: string
+-effects: (instructions on how the game needs to alter the default setup of the game)
+elementstyle=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>335</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>eventFlags</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>430</x>
+      <y>290</y>
+      <w>88</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>45;15;45;45</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>425</x>
+      <y>430</y>
+      <w>88</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Aggregation: has-a</panel_attributes>
+    <additional_attributes>40;15;50;40</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>775</x>
+      <y>105</y>
+      <w>50</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>.saveFiles
+--
+id: int
+trail: string
+name: string
+timestamp: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

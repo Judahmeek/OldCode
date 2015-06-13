@@ -1,0 +1,20 @@
+Attempt at a summary of basic C++ language sytax and features
+
+Subjects covered:
+Activating a program
+Linking modules/headers/etc
+Comments (all types)
+All operators (Point out special types)
+Input from Standard input
+Input from file
+Output to standard output
+Output to file
+variable scope
+Flow control: if, else, switch, conditional operator
+Repetition: while, do while, for, for-each
+Functions: pass by value, pass by reference
+Arrays: initialization, transversal
+Strings: finding substrings, concatenation, comparison
+Objects: declaration, creation, initialization, modification, deletion
+Standard objects: lists, hash tables / dictionaries, etc
+Inheritance: polymorphism, multiple inheritance

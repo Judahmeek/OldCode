@@ -30,11 +30,11 @@ short arraySum (const short x[], short size){ //O(N)
 /*creates an array that shows the number of steps required to promote a letter in the same digit.
 Example: [a, a, b] has the signature of [2, 1] because promoting a[0] requires going through both combinations of a[1] and a[2] while promoting a[1] merely requires switching a[1] and a[2].
 If start != 0, then freq[] must be modified accordingly.*/
-void signature (const short freq[], short freqSize, int result[], short resultSize, short start){ //~6/22-00:37 O(N^2)
+void promotionSignature (const short freq[], short freqSize, int result[], short resultSize, short start){ //~6/22-00:37 O(N^2)
 	short i, j = 0;
 	short remainingDigits = resultSize - start;
 	short copy[freqSize];
-	for(i = 0; i < freqSize; ++i){ O(C)
+	for(i = 0; i < freqSize; ++i){ //O(C)
 		copy[i] = freq[i];
 	}
 	
@@ -44,6 +44,8 @@ void signature (const short freq[], short freqSize, int result[], short resultSi
 	
 	for(i = start; i < resultSize; ++i){ //O(N * N) = O(N^2)
 		result[i] = fact(remainingDigits) / arrayFact(copy, freqSize, j); //O(N) + O(N) = O(N)
+		if(!result[i])
+			++result[i];
 		while(copy[j] == 0)
 			++j;
 		--copy[j];

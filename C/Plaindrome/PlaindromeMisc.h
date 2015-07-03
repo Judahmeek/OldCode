@@ -9,11 +9,11 @@ int fact(short x){ //O(N)
 	return y;
 };
 
-int arrayFact (const short x[], short size, short start){ //returns sum of each element's factorial O(N)
-	int total = 1;
-	short i;
-	for(i = start; i < size; ++i){
-		total *= fact(x[i]);
+int arrayFact (const short x[], short size, short startingIndex, short minus){ //~7/1-17:00 returns sum of each element's factorial O(N)
+	short i = startingIndex;
+	int total = fact(x[i++] - minus);
+	while(i < size){
+		total *= fact(x[i++]);
 	}
 	return total;
 };
@@ -28,27 +28,27 @@ short arraySum (const short x[], short size){ //O(N)
 };
 
 /*creates an array that shows the number of steps required to promote a letter in the same digit.
-Example: [a, a, b] has the signature of [2, 1] because promoting a[0] requires going through both combinations of a[1] and a[2] while promoting a[1] merely requires switching a[1] and a[2].
-If start != 0, then freq[] must be modified accordingly.*/
-void promotionSignature (const short freq[], short freqSize, int result[], short resultSize, short start){ //~6/22-00:37 O(N^2)
-	short i, j = 0;
-	short remainingDigits = resultSize - start;
-	short copy[freqSize];
-	for(i = 0; i < freqSize; ++i){ //O(C)
-		copy[i] = freq[i];
+Example: [a, a, b] has the signature of [2, 1] because promoting a[0] requires going through both combinations of a[1] and a[2] while promoting a[1] merely requires switching a[1] and a[2].*/
+void promotionSignature (const short freq[], short freqSize, int result[], short resultSize, short startingIndex){ //~7/1-17:00 O(N^2)
+	short i, j = 0, k = 0;
+	while(freq[j] == 0){
+			++j;
 	}
 	
-	for(i = 0; i < start; ++i){ //O(N)
+	short remainingDigits = resultSize - startingIndex;
+	
+	for(i = 0; i < startingIndex; ++i){ //O(N)
 		result[i] = -1;
 	}
-	
-	for(i = start; i < resultSize; ++i){ //O(N * N) = O(N^2)
-		result[i] = fact(remainingDigits) / arrayFact(copy, freqSize, j); //O(N) + O(N) = O(N)
+	for(; i < resultSize; ++i){ //O(N * N) = O(N^2)
+		result[i] = fact(remainingDigits) / arrayFact(freq, freqSize, j, k); //O(N) + O(N) = O(N)
 		if(!result[i])
 			++result[i];
-		while(copy[j] == 0)
+		++k;
+		if(k == freq[j]){
 			++j;
-		--copy[j];
+			k = 0;
+		}
 		--remainingDigits;
 	}
 };
@@ -57,7 +57,7 @@ void promotionSignature (const short freq[], short freqSize, int result[], short
 The purpose of this function is to convert a state that is referenced by the number of steps between it and the "minimal state" back into a string.
 The "minimal state" is the state created by step 0. Example: Freq[2,2,2,1] => Result[a,a,b,b,c,c,d].
 */
-void steps2state(const short freq[], short freqSize, short result[], short resultSize, short steps){ //~6/22-00:37 O(N^3)
+void steps2state(const short freq[], short freqSize, short result[], short resultSize, short steps){ //~7/1-17:00
 	short sigSize = resultSize - 1;
 	int sig[sigSize];
 	short i = 0, j = 0, target = 0;
@@ -68,8 +68,8 @@ void steps2state(const short freq[], short freqSize, short result[], short resul
 	}
 	
 	--copy[0];
-	signature(copy, freqSize, sig, sigSize, 0); //O(N^2)
-    for(i = 0; i < sigSize; ++i){ //O(N^3)
+	promotionSignature(copy, freqSize, sig, sigSize, 0);
+    for(i = 0; i < sigSize; ++i){
     	while( steps >= sig[i]){
     		steps -= sig[i];
     		++copy[target];
@@ -78,9 +78,8 @@ void steps2state(const short freq[], short freqSize, short result[], short resul
 				++target;
 			}
     		--copy[target];
-			signature(copy, freqSize, sig, sigSize, i); //O(N^2)
+			promotionSignature(copy, freqSize, sig, sigSize, i);
 		}
-		
 		j = 0;
 		while(copy[j] == 0){
 			++j;
@@ -95,7 +94,7 @@ void steps2state(const short freq[], short freqSize, short result[], short resul
 /*determines the number of steps a given state[] is away from the "minimal state" based on the given freq[].
 The "minimal state" is the state created by step 0. Example: Freq[2,2,2,1] => Result[a,a,b,b,c,c,d].
 */
-int state2steps(const short freq[], short freqSize, short state[], short stateSize){ //~6/22-00:37 O(N^3)
+short state2steps(const short freq[], short freqSize, short state[], short stateSize){ //~7/1-17:00
 	
 	short copy[freqSize];
 	short i = 0;
@@ -104,35 +103,35 @@ int state2steps(const short freq[], short freqSize, short state[], short stateSi
 	}
 	--copy[0];
 	
-	short minState[stateSize];
-	steps2state(freq, freqSize, minState, stateSize, 0); //Create min state //O(N^3)
+	short zeroState[stateSize];
+	steps2state(freq, freqSize, zeroState, stateSize, 0); //Create zero state
 	
-	int steps = 0;
+	short steps = 0;
 	short sigSize = stateSize - 1;
 	int sig[sigSize];
-	signature(copy, freqSize, sig, sigSize, 0); //Create min state signature O(N^2)
+	promotionSignature(copy, freqSize, sig, sigSize, 0); //Create zero state signature
 	
-	for(i = 0; i < sigSize;){ //O(N^3)
-		if(state[i] == minState[i]){
-			--copy[minState[i + 1]];
+	for(i = 0; i < sigSize;){
+		if(state[i] == zeroState[i]){
+			--copy[zeroState[i + 1]];
 			++i;
 		} else {
 			steps += sig[i];
-			++copy[minState[i]];
-    		++minState[i];
-			while(copy[minState[i]] == 0){
-				++minState[i];
+			++copy[zeroState[i]];
+    		++zeroState[i];
+			while(copy[zeroState[i]] == 0){
+				++zeroState[i];
 			}
-    		--copy[minState[i]];
-			signature(copy, freqSize, sig, sigSize, i); //O(N^2)
+    		--copy[zeroState[i]];
+			promotionSignature(copy, freqSize, sig, sigSize, i);
 			short k = i, l, m;
-			for(l = 0; l < freqSize; ++l){ //O(N)
+			for(l = 0; l < freqSize; ++l){
 				for(m = 0; m < copy[l]; ++m){
-					minState[++k] = l;
+					zeroState[++k] = l;
 				}
 			}
 		}
 	}
 	
 	return steps;
-};
+}

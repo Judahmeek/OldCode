@@ -1,3 +1,9 @@
+# All test files
+test.*
+
+# All executable files
+*.exe
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

@@ -46,7 +46,7 @@ int main() {
 	const short SIZE = 26;
 	const short zerothSIZE = SIZE - 1;
     short freq[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    short c,size = 0;
+    short i,c,size = 0;
     
     while(c != '\n'){ //input anagram of palindrome
     	c = getchar();
@@ -58,10 +58,10 @@ int main() {
     }
 	
     short odd = 0, freqSize = 0; //test for palindrome qualities
-    for(c = 0; c<SIZE; ++c){
-        if(freq[c] > 0){
+    for(i = 0; i<SIZE; ++i){
+        if(freq[i] > 0){
         	++freqSize;
-        	if(freq[c] % 2 != 0)
+        	if(freq[i] % 2 != 0)
         		++odd;
 		}
     }
@@ -72,15 +72,24 @@ int main() {
     	reversedHeapsort(freq, SIZE);
     	
     	short tscs = 0; //tscs stands for total state changing swaps
-    	for(c = 0; c < freqSize; ++ c){
-    		tscs += freq[c] * (size - freq[c]);
+    	for(i = 0; i < freqSize; ++i){
+    		tscs += freq[i] * (size - freq[i]);
 		}
 		tscs /= 2;
 		
-    	printf("Total states: %d\n", fact(size)/arrayFact(freq, freqSize, 0));
+		int totalStates = fact(size)/arrayFact(freq, freqSize, 0);
+		int posSwaps = size * (size - 1) / 2;
+		
+    	printf("Total states: %d\n", totalStates);
     	printf("Total state changing swaps: %d\n", tscs);
-    	printf("All possible swaps per state: %d\n", size * (size - 1) / 2);
+    	printf("All possible swaps per state: %d\n", posSwaps);
+    	
+		double** MarkovMatrix;
+		MarkovMatrix  = (double**)calloc(sizeof(double*) * totalStates);
+		MarkovMatrix[0] = (double*)calloc(sizeof(double) * totalStates * totalStates); // rows * columns
+		
+		InitializeMatrix(freq, freqSize, stateSize, MarkovMatrix[i], totalStates, i, tscs);
 	}
     
-    return 0; //Todo List: string->step, state matrix initialization, matrix inversion, estimated step calculation: https://en.wikipedia.org/wiki/Absorbing_Markov_chain#Fundamental_matrix
+    return 0; //Todo List: matrix inversion, estimated step calculation: https://en.wikipedia.org/wiki/Absorbing_Markov_chain#Fundamental_matrix
 }

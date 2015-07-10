@@ -1,3 +1,5 @@
+#include "steps2state.c"
+
 /*determines the number of steps a given state[] is away from the "minimal state" based on the given freq[].
 The "minimal state" is the state created by step 0. Example: Freq[2,2,2,1] => Result[a,a,b,b,c,c,d].
 */

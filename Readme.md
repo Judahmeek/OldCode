@@ -1,0 +1,3 @@
+This is my collection of every software project that I have considered worth saving. The Java & C++ files are almost all class assignments. The Haskell, Python, & C files are almost all completed [HackerRank](hackerrank.com) challenges. Each completed challenge contains HackerRank's rules for the challenge as well as a link to the challenge itself.
+
+I'm far from an expert in any language. However, I learn fast, enjoy getting my hands dirty, and have attempted to learn the features that are common to most computer languages. When I get stuck, I usually look for guidance through Google with a focus on StackOverflow & official documentation (Reddit has been useful in the past. It also looks like a growing resource, especially for younger languages such as Haskell)

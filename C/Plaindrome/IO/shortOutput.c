@@ -1,12 +1,5 @@
 #include <stdio.h>
-
-unsigned short findMaxPowOf10(short num) {
-    int count = 0;
-    unsigned short rval = 1;
-    while(num / rval) 
-        rval *= 10;
-    return rval/10;
-}
+#include"../findShortLength.c"
 
 void shortOutput(short num){
 if(num){
@@ -14,7 +7,7 @@ if(num){
 		putchar('-');
 		num *= -1;
 	}
-	unsigned short pow10 = findMaxPowOf10(num);
+	unsigned short pow10 = findShortLength(num);
 	
 		while(pow10) {
 		    unsigned short digit = num / pow10;

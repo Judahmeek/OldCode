@@ -1,4 +1,4 @@
-#include "printShortArray.c"
+#include "../IO/printShortArray.c"
 
 int main(){
 	short x[] = {0, -1, 2};

@@ -1,4 +1,4 @@
-#include "intOutput.c"
+#include "../IO/intOutput.c"
 
 int main(){
 	int x = 0;

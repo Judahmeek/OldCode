@@ -1,4 +1,4 @@
-#include "../IO/printTitledShortArray.c"
+#include "../IO/printTitledIntArray.c"
 #include "../intArrayCompare.c"
 
 int main() {
@@ -6,16 +6,13 @@ int main() {
 	int y[] = {3, 2, 2};
 	short arraySize = 3;
 
-	if(!intArrayCompare(x, y, arraySize)){
-		printTitledShortArray("Short Arrays: ", x, arraySize, 0);
-		printTitledShortArray(" == ", y, arraySize, 0);
+	printTitledIntArray("Int Arrays: ", x, arraySize, 0);
+	printTitledIntArray(" == ", y, arraySize, 0);
+
+	if(!intArrayCompare(x, y, arraySize))
 		puts(" : Passed");
-	}
-	else{
-		printTitledShortArray("Short Arrays: ", x, arraySize, 0);
-		printTitledShortArray(" == ", y, arraySize, 0);
-		puts(" : Passed");
-	}
+	else
+		puts(" : Failed");
 	
 	return 0;
 }

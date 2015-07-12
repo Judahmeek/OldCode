@@ -1,4 +1,4 @@
-#include "shortOutput.c"
+#include "../IO/shortOutput.c"
 
 int main(){
 	int x = 0;	

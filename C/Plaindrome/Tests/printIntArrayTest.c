@@ -1,4 +1,4 @@
-#include "printIntArray.c"
+#include "../IO/printIntArray.c"
 
 int main(){
 	int x[] = {0, -1, 2};

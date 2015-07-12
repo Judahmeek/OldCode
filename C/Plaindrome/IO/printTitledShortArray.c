@@ -1,7 +1,8 @@
 #include "printShortArray.c"
 
-void printTitledShortArray (const char* x, const short y[], short size){
+void printTitledShortArray (const char* x, const short y[], short size, _Bool newline){
 	fputs(x, stdout);
 	printShortArray (y, size);
-    puts("");
+	if(newline)
+    	putchar('\n');
 };

@@ -3,7 +3,7 @@
 /*determines the number of steps a given state[] is away from the "minimal state" based on the given freq[].
 The "minimal state" is the state created by step 0. Example: Freq[2,2,2,1] => Result[a,a,b,b,c,c,d].
 */
-short state2steps(const short freq[], short freqSize, short state[], short stateSize){
+int state2steps(const short freq[], short freqSize, short state[], short stateSize){
 	
 	short copy[freqSize];
 	short i = 0;
@@ -15,7 +15,7 @@ short state2steps(const short freq[], short freqSize, short state[], short state
 	short zeroState[stateSize];
 	steps2state(freq, freqSize, zeroState, stateSize, 0);
 	
-	short steps = 0;
+	int steps = 0;
 	short sigSize = stateSize - 1;
 	int sig[sigSize];
 	promotionSignature(copy, freqSize, sig, sigSize, 0);

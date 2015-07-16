@@ -84,9 +84,7 @@ int main() {
     	printf("Total state changing swaps: %d\n", tscs);
     	printf("All possible swaps per state: %d\n", posSwaps);
     	
-		double** MarkovMatrix;
-		MarkovMatrix  = (double**)malloc(sizeof(double*) * totalStates);
-		MarkovMatrix[0] = (double*)malloc(sizeof(double) * totalStates * totalStates); // rows * columns
+		double MarkovMatrix[totalStates][totalStates];
 		
 		InitializeMatrix(freq, freqSize, stateSize, MarkovMatrix[i], totalStates, i, tscs);
 	}

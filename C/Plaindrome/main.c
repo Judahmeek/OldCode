@@ -80,9 +80,9 @@ int main() {
 		int totalStates = fact(size)/arrayFact(freq, freqSize, 0);
 		int posSwaps = size * (size - 1) / 2;
 		
-    	printf("Total states: %d\n", totalStates);
-    	printf("Total state changing swaps: %d\n", tscs);
-    	printf("All possible swaps per state: %d\n", posSwaps);
+		printf("Total states: %d\n", totalStates);
+		printf("Total state changing swaps: %d\n", tscs);
+		printf("All possible swaps per state: %d\n", posSwaps);
     	
 		double MarkovMatrix[totalStates][totalStates];
 		

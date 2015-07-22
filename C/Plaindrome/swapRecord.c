@@ -26,7 +26,8 @@ swap** swapRecord(const short freq, short freqSize[], short stateSize, int total
 	//populate swapRecord
 	short leftDigit, rightDigit, swapRecordIndex, swapStateBuffer, j;
 	short swapState[stateSize];
-	for(stateID = 0; stateID < totalStates; ++stateID){
+	int stop = totalStates - 1; //The final swapRecord is guaranteed to be completely filled in
+	for(stateID = 0; stateID < stop; ++stateID){
     	
     	leftDigit = 0, rightDigit = 1, swapRecordIndex = 0;
     	scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSignature[stateID], &leftDigit, &rightDigit);

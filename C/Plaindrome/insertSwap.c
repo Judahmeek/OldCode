@@ -1,6 +1,6 @@
 #include "swap.c"
 
-void insertSwap(swap* swap, int partnerID, short index){
-	*swap.partnerID = partnerID;
-	*swap.index = index
+void insertSwap(swap* x, int partnerID, short index){
+	(*x).partnerID = partnerID;
+	(*x).index = index;
 }

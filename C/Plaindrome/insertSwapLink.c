@@ -1,6 +1,6 @@
 #include "insertSwap.c"
 
-void insertSwapLink(swapInstance* beforeSwap, int resultID, swapInstance* afterSwap, int stateID, short index){
+void insertSwapLink(swap* beforeSwap, int resultID, swap* afterSwap, int stateID, short index){
 	insertSwap(beforeSwap, resultID, index);
 	insertSwap(afterSwap, stateID, index);
 }

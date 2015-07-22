@@ -1,12 +1,12 @@
-#include "printSwapArray.c"
+#include "printSwapInstanceArray.c"
 
-void printSwapArrayAs2D (const char* x, const swap* twoD, int rows, short columns){
+void printSwapInstanceArrayAs2D (const char* x, const swapInstance* twoD, int rows, short columns){
 	puts(x);
 	int i;
 	for(i = 0; i < rows; ++i){
 		putchar(i + '0');
 		fputs(": ", stdout);
-		printSwapArray (&twoD[i * columns], columns);
+		printSwapInstanceArray (&twoD[i * columns], columns);
 		putchar('\n');
 	}    	
 };

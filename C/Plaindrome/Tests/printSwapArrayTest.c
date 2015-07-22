@@ -1,9 +1,9 @@
-#include "../IO/printSwapArray.c"
+#include "../IO/printSwapInstanceArray.c"
 
 int main() {
-	swap array[] = {{1, 2}, {3, 4}, {5, 6}};
+	SwapInstance array[] = {{1, 2}, {3, 4}, {5, 6}};
 	short arraySize = 3;
-	fputs("swapArray[]: {{1, 2}, {3, 4}, {5, 6}} is output as ", stdout);
-	printSwapArray (array, arraySize);
+	fputs("SwapInstanceArray[]: {{1, 2}, {3, 4}, {5, 6}} is output as ", stdout);
+	printSwapInstanceArray (array, arraySize);
 	return 0;
 }

@@ -1,3 +1,6 @@
+#ifndef FINDSHORTLENGTH
+#define FINDSHORTLENGTH
+
 unsigned short findShortLength(unsigned short num) {
 	if(num){
 		unsigned short rval = 1;
@@ -7,3 +10,5 @@ unsigned short findShortLength(unsigned short num) {
 	}
 	return 1;
 }
+
+#endif //FINDSHORTLENGTH

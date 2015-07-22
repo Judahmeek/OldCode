@@ -1,3 +1,6 @@
+#ifndef SHORTOUTPUT
+#define SHORTOUTPUT
+
 #include <stdio.h>
 #include"../findShortLength.c"
 
@@ -19,3 +22,5 @@ if(num){
 else
 	putchar('0');
 }
+
+#endif //SHORTOUTPUT

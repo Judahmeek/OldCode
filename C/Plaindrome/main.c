@@ -90,6 +90,10 @@ int main() {
 		
 		//void InitializeMatrix(const short freq, short freqSize[], short stateSize, double** MarkovMatrix, int totalStates, int tscs)
 		//InitializeMatrix(freq, freqSize, stateSize, MarkovMatrix, totalStates, tscs);
+		//InvertMatrix();
+		//CalculateFundamentalMatrix();
+		//CalculateAverageofAllExpectedStepsToAbsorbingStates();
+		//OutputResult();
 	}
     
     return 0; //Todo List: matrix inversion, estimated step calculation: https://en.wikipedia.org/wiki/Absorbing_Markov_chain#Fundamental_matrix

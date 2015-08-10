@@ -11,6 +11,6 @@ int main() {
 		}
 	}
 	
-	printShortArrayAs2D("printShortArrayAs2D Test:", array, rows, columns);
+	printShortArrayAs2D("printShortArrayAs2D Test:", array, columns, rows);
 	return 0;
 }

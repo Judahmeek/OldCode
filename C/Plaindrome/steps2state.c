@@ -1,3 +1,6 @@
+#ifndef STEPS2STATE
+#define STEPS2STATE
+
 #include "promotionSignature.c"
 
 /*converts result[] into an anagram of the palindrome based on the given freq[] and steps.
@@ -37,3 +40,5 @@ void steps2state(const short freq[], short freqSize, short result[], short resul
 	}
 	result[sigSize] = target;
 };
+
+#endif //STEPS2STATE

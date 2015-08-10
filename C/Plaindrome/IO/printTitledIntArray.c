@@ -1,3 +1,6 @@
+#ifndef PRINTTITLEDINTARRAY
+#define PRINTTITLEDINTARRAY
+
 #include "printIntArray.c"
 
 void printTitledIntArray (const char* x, const int y[], short size, _Bool newline){
@@ -6,3 +9,5 @@ void printTitledIntArray (const char* x, const int y[], short size, _Bool newlin
     if(newline)
     	putchar('\n');
 };
+
+#endif //PRINTTITLEDINTARRAY

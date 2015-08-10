@@ -1,3 +1,6 @@
+#ifndef PRINTSHORTARRAYAS2D
+#define PRINTSHORTARRAYAS2D
+
 #include "printShortArray.c"
 
 void printShortArrayAs2D (const char* x, const short* twoD, int rows, short columns){
@@ -10,3 +13,5 @@ void printShortArrayAs2D (const char* x, const short* twoD, int rows, short colu
 		putchar('\n');
 	}    	
 };
+
+#endif //PRINTSHORTARRAYAS2D

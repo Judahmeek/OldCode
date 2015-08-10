@@ -1,3 +1,6 @@
+#ifndef SHORTARRAYCOMPARE
+#define SHORTARRAYCOMPARE
+
 short shortArrayCompare (const short x[], const short y[], short size){
 	short i;
 	for(i = 0; i < size; ++i){
@@ -8,3 +11,5 @@ short shortArrayCompare (const short x[], const short y[], short size){
 	}
 	return 0;
 };
+
+#endif //SHORTARRAYCOMPARE

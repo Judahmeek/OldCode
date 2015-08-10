@@ -1,3 +1,6 @@
+#ifndef PRINTSWAPARRAY
+#define PRINTSWAPARRAY
+
 #include "shortOutput.c"
 #include "intOutput.c"
 #include "../swap.c"
@@ -19,3 +22,5 @@ void printSwapArray (const swap y[], short size){
 	putchar(' ');
     putchar('}');
 };
+
+#endif //PRINTSWAPARRAY

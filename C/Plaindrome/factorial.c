@@ -1,3 +1,6 @@
+#ifndef FACTORIAL
+#define FACTORIAL
+
 int factorial(short x){
 	int y = 1;
 	while(x > 1){
@@ -6,3 +9,5 @@ int factorial(short x){
 	}
 	return y;
 };
+
+#endif //FACTORIAL

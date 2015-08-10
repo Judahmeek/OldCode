@@ -1,3 +1,6 @@
+#ifndef PROMOTIONSIGNATURE
+#define PROMOTIONSIGNATURE
+
 #include "arrayFactorial.c"
 
 /*creates an array that shows the number of steps required to promote a letter in the same digit.
@@ -25,3 +28,4 @@ void promotionSignature (const short freq[], short freqSize, int result[], short
 		--remainingDigits;
 	}
 };
+#endif //PROMOTIONSIGNATURE

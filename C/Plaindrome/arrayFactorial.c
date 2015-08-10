@@ -1,3 +1,6 @@
+#ifndef ARRAYFACTORIAL
+#define ARRAYFACTORIAL
+
 #include "Factorial.c"
 
 int arrayFactorial(const short x[], short size, short startingIndex, short minus){ //~7/1-17:00 returns sum of each element's factorial O(N)
@@ -8,3 +11,5 @@ int arrayFactorial(const short x[], short size, short startingIndex, short minus
 	}
 	return total;
 };
+
+#endif //ARRAYFACTORIAL

@@ -1,3 +1,6 @@
+#ifndef INTOUTPUT
+#define INTOUTPUT
+
 #include <stdio.h>
 #include"../maxPowerOf10_i.c"
 
@@ -19,3 +22,5 @@ if(num){
 else
 	putchar('0');
 }
+
+#endif //INTOUTPUT

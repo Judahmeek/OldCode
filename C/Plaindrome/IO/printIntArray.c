@@ -1,3 +1,6 @@
+#ifndef PRINTINTARRAY
+#define PRINTINTARRAY
+
 #include "intOutput.c"
 
 void printIntArray (const int y[], short size){
@@ -13,3 +16,5 @@ void printIntArray (const int y[], short size){
 	putchar(' ');
     putchar('}');
 };
+
+#endif //PRINTINTARRAY

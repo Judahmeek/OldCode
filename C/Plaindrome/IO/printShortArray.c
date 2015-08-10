@@ -1,3 +1,6 @@
+#ifndef PRINTSHORTARRAY
+#define PRINTSHORTARRAY
+
 #include "shortOutput.c"
 
 void printShortArray (const short y[], short size){
@@ -13,3 +16,5 @@ void printShortArray (const short y[], short size){
 	putchar(' ');
     putchar('}');
 };
+
+#endif //PRINTSHORTARRAY

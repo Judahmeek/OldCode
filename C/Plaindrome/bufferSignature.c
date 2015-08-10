@@ -1,3 +1,6 @@
+#ifndef BUFFERSIGNATURE
+#define BUFFERSIGNATURE
+
 #include "arraySum.c"
 
 void bufferSignature(const short freq[], const short freqSize, const short state[], const short stateSize, short result[]){
@@ -16,3 +19,5 @@ void bufferSignature(const short freq[], const short freqSize, const short state
 		++j;
 	}
 }
+
+#endif //BUFFERSIGNATURE

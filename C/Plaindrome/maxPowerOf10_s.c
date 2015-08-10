@@ -1,3 +1,6 @@
+#ifndef MAXPOWEROF10_S
+#define MAXPOWEROF10_S
+
 unsigned short maxPowerOf10_s(unsigned short num) {
 	if(num){
 		unsigned short rval = 1;
@@ -7,3 +10,5 @@ unsigned short maxPowerOf10_s(unsigned short num) {
 	}
 	return 1;
 }
+
+#endif //MAXPOWEROF10_S

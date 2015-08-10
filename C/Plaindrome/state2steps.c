@@ -1,3 +1,6 @@
+#ifndef STATE2STEPS
+#define STATE2STEPS
+
 #include "steps2state.c"
 
 /*determines the number of steps a given state[] is away from the "minimal state" based on the given freq[].
@@ -43,4 +46,6 @@ int state2steps(const short freq[], short freqSize, short state[], short stateSi
 	}
 	
 	return steps;
-}
+};
+
+#endif //STATE2STEPS

@@ -1,3 +1,6 @@
+#ifndef INTARRAYCOMPARE
+#define INTARRAYCOMPARE
+
 short intArrayCompare (const int x[], const int y[], short size){
 	short i;
 	for(i = 0; i < size; ++i){
@@ -8,3 +11,5 @@ short intArrayCompare (const int x[], const int y[], short size){
 	}
 	return 0;
 };
+
+#endif //INTARRAYCOMPARE

@@ -1,3 +1,6 @@
+#ifndef PRINTTITLEDSWAPARRAY
+#define PRINTTITLEDSWAPARRAY
+
 #include "printSwapArray.c"
 
 void printTitledSwapArray (const char* x, const swap y[], short size, _Bool newline){
@@ -6,3 +9,5 @@ void printTitledSwapArray (const char* x, const swap y[], short size, _Bool newl
     if(newline)
     	putchar('\n');
 };
+
+#endif //PRINTTITLEDSWAPARRAY

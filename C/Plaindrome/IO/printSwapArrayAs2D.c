@@ -1,4 +1,6 @@
 #include "printSwapInstanceArray.c"
+#ifndef PRINTSWAPINSTANCEARRAYAS2D
+#define PRINTSWAPINSTANCEARRAYAS2D
 
 void printSwapInstanceArrayAs2D (const char* x, const swapInstance* twoD, int rows, short columns){
 	puts(x);
@@ -10,3 +12,5 @@ void printSwapInstanceArrayAs2D (const char* x, const swapInstance* twoD, int ro
 		putchar('\n');
 	}    	
 };
+
+#endif //PRINTSWAPARRAYAS2D

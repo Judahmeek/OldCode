@@ -1,3 +1,6 @@
+#ifndef MAXPOWEROF10_I
+#define MAXPOWEROF10_I
+
 unsigned int maxPowerOf10_i(unsigned int num) {
 	if(num){
 		unsigned int rval = 1;
@@ -7,3 +10,5 @@ unsigned int maxPowerOf10_i(unsigned int num) {
 	}
 	return 1;
 }
+
+#endif //MAXPOWEROF10_I

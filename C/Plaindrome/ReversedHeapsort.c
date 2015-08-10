@@ -1,3 +1,6 @@
+#ifndef REVERSEDHEAPSORT
+#define REVERSEDHEAPSORT
+
 #include <math.h>
 
 void siftDown(short *a, short root, short end){
@@ -41,3 +44,5 @@ void reversedHeapsort(short a[], short count){
         siftDown(a, 0, end);
     }
 };
+
+#endif //REVERSEDHEAPSORT

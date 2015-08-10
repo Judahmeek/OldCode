@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include"../findIntLength.c"
+#include"../maxPowerOf10_i.c"
 
 void intOutput(int num){
 if(num){
@@ -7,7 +7,7 @@ if(num){
 		putchar('-');
 		num *= -1;
 	}
-	unsigned int pow10 = findIntLength(num);
+	unsigned int pow10 = maxPowerOf10_i(num);
 	
 		while(pow10) {
 		    unsigned int digit = num / pow10;

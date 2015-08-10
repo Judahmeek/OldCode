@@ -2,7 +2,7 @@
 #define SHORTOUTPUT
 
 #include <stdio.h>
-#include"../findShortLength.c"
+#include"../maxPowerOf10_s.c"
 
 void shortOutput(short num){
 if(num){
@@ -10,7 +10,7 @@ if(num){
 		putchar('-');
 		num *= -1;
 	}
-	unsigned short pow10 = findShortLength(num);
+	unsigned short pow10 = maxPowerOf10_s(num);
 	
 		while(pow10) {
 		    unsigned short digit = num / pow10;

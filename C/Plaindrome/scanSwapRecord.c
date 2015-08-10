@@ -1,6 +1,8 @@
 #ifndef SCANSWAPRECORD
 #define SCANSWAPRECORD
 
+#include "swap.c"
+
 void scanSwapRecord(swap swapRow[], short* swapRecordIndexPtr, short bufferSignatureRow[], short* leftDigitPtr, short* rightDigitPtr, short tscs){
 	while(swapRow[*swapRecordIndexPtr].index != -1 && *swapRecordIndexPtr < tscs){
 		*rightDigitPtr = swapRow[*swapRecordIndexPtr].index + 1;

@@ -12,12 +12,12 @@ if(num){
 	}
 	unsigned int pow10 = maxPowerOf10_i(num);
 	
-		while(pow10) {
-		    unsigned int digit = num / pow10;
-		    putchar(digit + '0');
-		    num -= digit * pow10;
-		    pow10 /= 10;
-		}
+	while(pow10) {
+	    unsigned int digit = num / pow10;
+	    putchar(digit + '0');
+	    num -= digit * pow10;
+	    pow10 /= 10;
+	}
 }
 else
 	putchar('0');

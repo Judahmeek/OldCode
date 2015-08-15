@@ -1,40 +1,46 @@
-#ionclude "insertSwapLink
+#include <stdlib.h>
+#include "state2steps.c"
+#include "scanSwapRecord.c"
+#include "insertSwapLink.c"
+#include "bufferSignature.c"
+#include "./IO/printTitledShortArray.c"
+#include "./IO/printTitledSwapArray.c"
 
-swap** swapRecord(const short freq, short freqSize[], short stateSize, int totalStates, int tscs)
+swap** swapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
 {
 	int stateID, i;
-	short bufferSignature[totalStates][sigSize];
+	short bufferSig[totalStates][stateSize];
 	short states[totalStates][stateSize];
 	swap** swapRecord;
 	
-	swapRecord  = (int **)malloc(sizeof(int *) * totalStates);
-    swapRecord[0] = (int *)malloc(sizeof(int) * totalStates * tscs);
+	swapRecord = (swap **)malloc(sizeof(swap *) * totalStates);
+    swapRecord[0] = (swap *)malloc(sizeof(swap) * totalStates * tscs);
  
     for(i = 0; i < totalStates; ++i)
         swapRecord[i] = (*swapRecord + tscs * i);
-	
-	//Initializing the bufferSignature and swapRecord arrays
-	for(stateID = 0; stateID < totalStates; ++stateID){
+    
+	for(stateID = 0; stateID < totalStates; ++stateID){ //Initializing
 		steps2state(freq, freqSize, states[stateID], stateSize, stateID);
-		bufferSignature(freq, freqSize, states[stateID], bufferSignature[stateID], sigSize)
+		bufferSignature(freq, freqSize, states[stateID], stateSize, bufferSig[stateID]);
 		for(i = 0; i < tscs; ++i){
-			swapRecord[stateID][i].stateID = -1;
+			swapRecord[stateID][i].partnerID = -1;
 			swapRecord[stateID][i].index = -1;
 		}
 	}
 	
-	//populate swapRecord
+	//populating swapRecord
 	short leftDigit, rightDigit, swapRecordIndex, swapStateBuffer, j;
 	short swapState[stateSize];
-	int stop = totalStates - 1; //The final swapRecord is guaranteed to be completely filled in
+	int stop = totalStates - 1; //The final swapRecordRow will be completely filled in if everything else works correctly
 	for(stateID = 0; stateID < stop; ++stateID){
-    	
+	
     	leftDigit = 0, rightDigit = 1, swapRecordIndex = 0;
-    	scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSignature[stateID], &leftDigit, &rightDigit);
+    	
     	
     	while(swapRecordIndex < tscs){
-    		if(states[stateID][leftDigit] == states[stateID][rightDigit])
+    		if(states[stateID][leftDigit] == states[stateID][rightDigit]){
     			++rightDigit;
+			}
     		else{
     			for(j = 0; j < stateSize; ++j) //initialize swapState
     				swapState[j] = states[stateID][j];
@@ -43,18 +49,17 @@ swap** swapRecord(const short freq, short freqSize[], short stateSize, int total
     			swapState[rightDigit] = states[stateID][leftDigit];
     			
     			swapStateBuffer = 0;
-    			for(j = leftDigit + 1; j < rightDigit; ++j) //count diffValue
+    			for(j = leftDigit + 1; j < rightDigit; ++j)
     				if(swapState[leftDigit] != swapState[j])
-    					++swapStateBuffer
-    			
-    			
+    					++swapStateBuffer;
+    					
     			int partnerID = state2steps(freq, freqSize, swapState, stateSize);
-    			insertSwapLink(swapRecord[stateID][swapRecordIndex], swapRecord[partnerID][bufferSignature[partnerID][leftDigit] + swapStateBuffer], partnerID, stateID, rightDigit);
     			
-    			++swapRecordIndex, ++rightDigit;    			
-    			scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSignature[stateID], &leftDigit, &rightDigit);
+    			insertSwapLink(&swapRecord[stateID][swapRecordIndex], partnerID, &swapRecord[partnerID][bufferSig[partnerID][leftDigit] + swapStateBuffer], stateID, rightDigit);
+    			
+    			++swapRecordIndex, ++rightDigit;
+    			scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSig[stateID], &leftDigit, &rightDigit, tscs);
 			}
-			
 			if(rightDigit >= stateSize){
 				++leftDigit;
 				rightDigit = leftDigit + 1;

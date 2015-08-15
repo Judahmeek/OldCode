@@ -3,12 +3,12 @@
 #include "../bufferSignature.c"
 
 int main(){
-	short freq[] = {3, 2, 2};
+	short freq[] = {2, 2, 1};
 	short freqSize = 3;
-	short state[] = {1, 0, 0, 1, 0, 2, 2};
-	short stateSize = 7;
+	short state[] = { 0, 1, 1, 2, 0 };
+	short stateSize = 5;
 	short result[stateSize];
-	short target[] = {0, 5, 8, 11, 14, 16, 16};
+	short target[] = {0, 3, 5, 7, 8};
 	
 	bufferSignature(freq, freqSize, state, stateSize, result);
 	

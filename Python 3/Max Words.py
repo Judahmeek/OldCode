@@ -26,3 +26,9 @@ def solution(string):
     return max
 	
 #https://codility.com/c/feedback/X6ASAS-XYK
+#
+#Test Cases:
+#No letters
+#No spaces
+#No punctuation
+#Multiple sentences

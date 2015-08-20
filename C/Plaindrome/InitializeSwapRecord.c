@@ -9,7 +9,7 @@
 #include "./IO/printTitledShortArray.c"
 #include "./IO/printTitledSwapArray.c"
 
-swap** swapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
+swap** InitializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
 {
 	int stateID, i;
 	short bufferSig[totalStates][stateSize];

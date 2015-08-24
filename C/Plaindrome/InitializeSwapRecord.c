@@ -9,16 +9,12 @@
 #include "./IO/printTitledShortArray.c"
 #include "./IO/printTitledSwapArray.c"
 
-swap** InitializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
+swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSig, short** states, short stateSize, int totalStates, int tscs)
 {
 	int stateID, i;
-	short bufferSig[totalStates][stateSize];
-	short states[totalStates][stateSize];
-	swap** swapRecord;
 	
-	swapRecord = (swap **)malloc(sizeof(swap *) * totalStates);
+	swap** swapRecord = (swap **)malloc(sizeof(swap *) * totalStates);
     swapRecord[0] = (swap *)malloc(sizeof(swap) * totalStates * tscs);
- 
     for(i = 0; i < totalStates; ++i)
         swapRecord[i] = (*swapRecord + tscs * i);
     

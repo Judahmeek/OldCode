@@ -84,7 +84,7 @@ int main() {
 		printf("Total state changing swaps: %d\n", tscs);
 		printf("All possible swaps per state: %d\n", posSwaps);
     	
-		double** MarkovMatrix = InitializeMatrix(freq, freqSize, stateSize, MarkovMatrix, totalStates, tscs);
+		double** MarkovMatrix = InitializeMatrix(freq, freqSize, stateSize, totalStates, tscs);
 		//InvertMatrix();
 		//CalculateFundamentalMatrix();
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();

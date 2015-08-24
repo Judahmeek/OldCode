@@ -1,11 +1,9 @@
 #ifndef INSERTSWAPLINK
 #define INSERTSWAPLINK
 
-#include "insertSwap.c"
-
-void insertSwapLink(swap* beforeSwap, int resultID, swap* afterSwap, int stateID, short index){
-	insertSwap(beforeSwap, resultID, index);
-	insertSwap(afterSwap, stateID, index);
+void insertSwapLink(int* beforeSwapPtr, int* resultIDPtr, int* afterSwapPtr, int* stateIDPtr){
+	*beforeSwapPtr = *resultIDPtr;
+	*afterSwapPtr = *stateIDPtr;
 };
 
 #endif //INSERTSWAPLINK

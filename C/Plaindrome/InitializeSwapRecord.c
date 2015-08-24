@@ -1,20 +1,19 @@
 #ifdef DEBUG
 #include <stdio.h>
+#include "./IO/printTitledIntArray.c"
 #endif
 #include <stdlib.h>
 #include "state2steps.c"
 #include "scanSwapRecord.c"
 #include "insertSwapLink.c"
 #include "bufferSignature.c"
-#include "./IO/printTitledShortArray.c"
-#include "./IO/printTitledSwapArray.c"
 
-swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSig, short** states, short stateSize, int totalStates, int tscs)
+int** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSig, short** states, short stateSize, int totalStates, int tscs)
 {
 	int stateID, i;
 	
-	swap** swapRecord = (swap **)malloc(sizeof(swap *) * totalStates);
-    swapRecord[0] = (swap *)malloc(sizeof(swap) * totalStates * tscs);
+	int** swapRecord = (int **)malloc(sizeof(int *) * totalStates);
+    swapRecord[0] = (int *)malloc(sizeof(int) * totalStates * tscs);
     for(i = 0; i < totalStates; ++i)
         swapRecord[i] = (*swapRecord + tscs * i);
     
@@ -22,8 +21,7 @@ swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSi
 		steps2state(freq, freqSize, states[stateID], stateSize, stateID);
 		bufferSignature(freq, freqSize, states[stateID], stateSize, bufferSig[stateID]);
 		for(i = 0; i < tscs; ++i){
-			swapRecord[stateID][i].partnerID = -1;
-			swapRecord[stateID][i].index = -1;
+			swapRecord[stateID][i] = -1;
 		}
 		#ifdef DEBUG
 		printf("Initialized row %d\n", stateID);
@@ -33,14 +31,13 @@ swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSi
 	//populating swapRecord
 	short lowIndex, highIndex, swapRecordIndex, swapStateBuffer, j;
 	short swapState[stateSize];
-	//int stop = totalStates - 1; //The final swapRecordRow will be completely filled in if everything else works correctly
 	for(stateID = 0; stateID < totalStates; ++stateID){
 	
     	lowIndex = 0, highIndex = 1, swapRecordIndex = 0;
     	
     	#ifdef DEBUG
     	printf("\nstateID: %d\n", stateID);
-    	printTitledSwapArray("swapRecord: ", swapRecord[stateID], tscs, 1);
+    	printTitledIntArray("swapRecord: ", swapRecord[stateID], tscs, 1);
     	scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSig[stateID], &lowIndex, &highIndex, tscs);
     	printf("scan moves lowIndex to %d and highIndex to %d\n", lowIndex, highIndex);
     	#endif
@@ -59,15 +56,15 @@ swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSi
     			for(j = 0; j < stateSize; ++j) //initialize swapState
     				swapState[j] = states[stateID][j];
     			
-    			swapState[lowIndex] = states[stateID][highIndex]; //perform swap
+    			swapState[lowIndex] = states[stateID][highIndex]; //perform int
     			swapState[highIndex] = states[stateID][lowIndex];
     			
     			#ifdef DEBUG
     			if(arraySum(swapState, stateSize) != 6){
     				printf("lowIndex: %d, highIndex: %d\n", lowIndex, highIndex);
-	    			printTitledShortArray("baseState: ", states[stateID], stateSize, 0);
+	    			printTitledIntArray("baseState: ", states[stateID], stateSize, 0);
 	    			printf(", stateSize: %d stateSum: %d\n", stateSize, arraySum(states[stateID], stateSize));		
-	    			printTitledShortArray("swapState: ", swapState, stateSize, 0);
+	    			printTitledIntArray("swapState: ", swapState, stateSize, 0);
 	    			printf(", stateSize: %d stateSum: %d\n", stateSize, arraySum(swapState, stateSize));
 				}
 				#endif
@@ -79,7 +76,7 @@ swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSi
     					
     			int partnerID = state2steps(freq, freqSize, swapState, stateSize);
     			
-    			insertSwapLink(&swapRecord[stateID][swapRecordIndex], partnerID, &swapRecord[partnerID][bufferSig[partnerID][lowIndex] + swapStateBuffer], stateID, highIndex);
+    			insertSwapLink(&swapRecord[stateID][swapRecordIndex], &partnerID, &swapRecord[partnerID][bufferSig[partnerID][lowIndex] + swapStateBuffer], &stateID);
     			
     			++swapRecordIndex, ++highIndex;
     			#ifdef DEBUG
@@ -102,7 +99,7 @@ swap** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSi
 			}
 		#ifdef DEBUG
 		printf("swapRecord[%d]: ", stateID);
-		printSwapArray(swapRecord[stateID], tscs);
+		printIntArray(swapRecord[stateID], tscs);
 		putchar('\n');
 		#endif
 		}

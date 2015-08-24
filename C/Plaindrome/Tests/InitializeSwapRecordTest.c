@@ -1,13 +1,17 @@
-#define DEBUG
+//#define DEBUG
 #include "../digitSize_i.c"
 #include "../InitializeSwapRecord.c"
+#ifndef DEBUG
+#include "../IO/printTitledShortArray.c"
+#include "../IO/printIntArray.c"
+#endif
 
 int main(){
 	short freq[] = {2, 2, 1};
 	short freqSize = 3, stateSize = 5;
 	int i = 0;
 	
-	int tscs = 0; //tscs stands for total state changing swaps
+	int tscs = 0; //tscs stands for total state changing ints
 	for(i = 0; i < freqSize; ++i){
 		tscs += freq[i] * (stateSize - freq[i]);
 	}
@@ -27,7 +31,7 @@ int main(){
     for(i = 0; i < totalStates; ++i)
         bufferSig[i] = (*bufferSig + stateSize * i);
     
-	swap** swapRecord = InitializeSwapRecord(freq, freqSize, bufferSig, states, stateSize, totalStates, tscs);
+	int** swapRecord = InitializeSwapRecord(freq, freqSize, bufferSig, states, stateSize, totalStates, tscs);
 	
 	for(i = 0; i < totalStates; ++i){
         printf("Steps: %*d -> ", width, i);
@@ -35,7 +39,7 @@ int main(){
 		printTitledShortArray("Result: ", result, stateSize, 0);
 		putchar('\t');
 		printf("swapRecord[%d]: ", i);
-		printSwapArray(swapRecord[i], tscs);
+		printIntArray(swapRecord[i], tscs);
 		putchar('\n');
 	}
 	return 0;

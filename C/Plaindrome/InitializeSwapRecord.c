@@ -8,9 +8,11 @@
 #include "insertSwapLink.c"
 #include "bufferSignature.c"
 
-int** InitializeSwapRecord(const short freq[], short freqSize, short** bufferSig, short** states, short stateSize, int totalStates, int tscs)
+int** InitializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
 {
 	int stateID, i;
+	short bufferSig[totalStates][stateSize];
+	short states[totalStates][stateSize];
 	
 	int** swapRecord = (int **)malloc(sizeof(int *) * totalStates);
     swapRecord[0] = (int *)malloc(sizeof(int) * totalStates * tscs);

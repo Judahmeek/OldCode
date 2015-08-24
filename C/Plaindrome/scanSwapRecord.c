@@ -3,14 +3,14 @@
 
 #include "swap.c"
 
-void scanSwapRecord(swap swapRow[], short* swapRecordIndexPtr, short bufferSignatureRow[], short* leftDigitPtr, short* rightDigitPtr, short tscs){
+void scanSwapRecord(swap swapRow[], short* swapRecordIndexPtr, short bufferSignatureRow[], short* lowIndexPtr, short* highIndexPtr, short tscs){
 	while(swapRow[*swapRecordIndexPtr].index != -1 && *swapRecordIndexPtr < tscs){
 		++*swapRecordIndexPtr;
-		if(*swapRecordIndexPtr > bufferSignatureRow[*leftDigitPtr]){
-			++*leftDigitPtr;
-			*rightDigitPtr = *leftDigitPtr + 1;
+		if(*swapRecordIndexPtr > bufferSignatureRow[*lowIndexPtr]){
+			++*lowIndexPtr;
+			*highIndexPtr = *lowIndexPtr + 1;
 		} else {
-			*rightDigitPtr = swapRow[*swapRecordIndexPtr].index + 1;
+			*highIndexPtr = swapRow[*swapRecordIndexPtr].index + 1;
 		}
 	}
 }

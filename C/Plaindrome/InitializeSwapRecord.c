@@ -8,7 +8,7 @@
 #include "insertSwapLink.c"
 #include "bufferSignature.c"
 
-int** InitializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
+int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
 {
 	int stateID, i;
 	short bufferSig[totalStates][stateSize];

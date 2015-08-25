@@ -1,4 +1,4 @@
-#include "InitializeSwapRecord.c"
+#include "initializeSwapRecord.c"
 
 double ** initializeMatrix(const short freq[], short freqSize, short stateSize, int totalStates, int tscs, int posSwaps){
 	
@@ -12,7 +12,7 @@ double ** initializeMatrix(const short freq[], short freqSize, short stateSize, 
     for(i = 0; i < totalStates; ++i)
         markovMatrix[i] = (*markovMatrix + totalStates * i);
 	
-	int** swapRecord = InitializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
+	int** swapRecord = initializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
     
     #ifdef DEBUG
 	for(i = 0; i < totalStates; ++i){

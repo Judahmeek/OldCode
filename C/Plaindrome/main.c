@@ -38,20 +38,22 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 
 */
 
+//#define DEBUG
 #include <stdio.h>
-#include "ReversedHeapsort.h"
-#include "PlaindromeMisc.h"
+#include "arrayFactorial.c"
+#include "initializeMatrix.c"
+#include "ReversedHeapsort.c"
 
 int main() {
 	const short SIZE = 26;
 	const short zerothSIZE = SIZE - 1;
     short freq[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    short i,c,size = 0;
+    short i,c,stateSize = 0;
     
     while(c != '\n'){ //input anagram of palindrome
     	c = getchar();
     	if(c >= 'a' && c <= 'z'){
-    		++size;
+    		++stateSize;
     		c -= 'a';
     		++freq[c];
 		}
@@ -73,18 +75,18 @@ int main() {
     	
     	short tscs = 0; //tscs stands for total state changing swaps
     	for(i = 0; i < freqSize; ++i){
-    		tscs += freq[i] * (size - freq[i]);
+    		tscs += freq[i] * (stateSize - freq[i]);
 		}
 		tscs /= 2;
 		
-		int totalStates = fact(size)/arrayFact(freq, freqSize, 0);
-		int posSwaps = size * (size - 1) / 2;
+		int totalStates = factorial(stateSize)/arrayFactorial(freq, freqSize, 0, 0);
+		int posSwaps = stateSize * (stateSize - 1) / 2;
 		
 		printf("Total states: %d\n", totalStates);
 		printf("Total state changing swaps: %d\n", tscs);
 		printf("All possible swaps per state: %d\n", posSwaps);
     	
-		double** MarkovMatrix = InitializeMatrix(freq, freqSize, stateSize, totalStates, tscs);
+		double** MarkovMatrix = initializeMatrix(freq, freqSize, stateSize, totalStates, tscs, posSwaps);
 		//InvertMatrix();
 		//CalculateFundamentalMatrix();
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();

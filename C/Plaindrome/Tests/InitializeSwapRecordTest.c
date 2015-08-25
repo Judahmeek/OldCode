@@ -20,18 +20,8 @@ int main(){
 	int totalStates = factorial(stateSize)/arrayFactorial(freq, freqSize, 0, 0);
 	short width = digitSize_i(totalStates);
 	short result[stateSize];
-	
-	short** states = (short **)malloc(sizeof(short *) * totalStates);
-    states[0] = (short *)malloc(sizeof(short) * totalStates * stateSize);
-    for(i = 0; i < totalStates; ++i)
-        states[i] = (*states + stateSize * i);
-	
-	short** bufferSig = (short **)malloc(sizeof(short *) * totalStates);
-    bufferSig[0] = (short *)malloc(sizeof(short) * totalStates * stateSize);
-    for(i = 0; i < totalStates; ++i)
-        bufferSig[i] = (*bufferSig + stateSize * i);
     
-	int** swapRecord = InitializeSwapRecord(freq, freqSize, bufferSig, states, stateSize, totalStates, tscs);
+	int** swapRecord = initializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
 	
 	for(i = 0; i < totalStates; ++i){
         printf("Steps: %*d -> ", width, i);

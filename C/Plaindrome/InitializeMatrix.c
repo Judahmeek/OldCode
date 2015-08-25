@@ -1,4 +1,5 @@
 #include "initializeSwapRecord.c"
+#include "./IO/displayMatrix.c"
 
 double ** initializeMatrix(const short freq[], short freqSize, short stateSize, int totalStates, int tscs, int posSwaps){
 	
@@ -32,5 +33,8 @@ double ** initializeMatrix(const short freq[], short freqSize, short stateSize, 
         	markovMatrix[i][swapRecord[i][swapRecordIndex]] = singleSwapsPercentageOfPosSwaps;
 		}
 	}
+	
+	displayMatrix((double*)markovMatrix, totalStates);
+	
 	return markovMatrix;
 }

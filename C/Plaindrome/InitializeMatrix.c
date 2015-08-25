@@ -1,8 +1,9 @@
 #include "InitializeSwapRecord.c"
 
-InitializeMatrix(const short freq, short freqSize[], short stateSize, int totalStates, int tscs, int posSwaps){
+double ** initializeMatrix(const short freq[], short freqSize, short stateSize, int totalStates, int tscs, int posSwaps){
 	
-	swapsThatMaintainState = (posSwaps - tscs);
+	int i;
+	int swapsThatMaintainState = (posSwaps - tscs);
 	double stmsPercentageOfPosSwaps = swapsThatMaintainState/posSwaps;
 	double singleSwapsPercentageOfPosSwaps = 1/posSwaps;
 	
@@ -12,13 +13,24 @@ InitializeMatrix(const short freq, short freqSize[], short stateSize, int totalS
         markovMatrix[i] = (*markovMatrix + totalStates * i);
 	
 	int** swapRecord = InitializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
+    
+    #ifdef DEBUG
+	for(i = 0; i < totalStates; ++i){
+		printf("swapRecord[%d]: ", i);
+		printIntArray(swapRecord[i], tscs);
+		putchar('\n');
+	}
+	#endif
 	
 	short swapRecordIndex;
-	for(i = 0; i < totalStates; ++i){//for each row
-        swapR[i] = (*swapR + tscs * i * sizeof(int));
+	for(i = 0; i < totalStates; ++i){
         markovMatrix[i][i] = stmsPercentageOfPosSwaps;
         for(swapRecordIndex = 0; swapRecordIndex < tscs; ++swapRecordIndex){
-        	markovMatrix[i][swapRecord[swapRecordIndex]] = singleSwapsPercentageOfPosSwaps;
+        	#ifdef DEBUG
+        	printf("markovMatrix[%d][swapRecord[%d][%d]: %d] = %d;\n", i, i, swapRecordIndex, swapRecord[i][swapRecordIndex], singleSwapsPercentageOfPosSwaps);
+        	#endif
+        	markovMatrix[i][swapRecord[i][swapRecordIndex]] = singleSwapsPercentageOfPosSwaps;
 		}
 	}
+	return markovMatrix;
 }

@@ -1,6 +1,7 @@
 #ifdef DEBUG
 #include <stdio.h>
 #include "./IO/printTitledIntArray.c"
+#include "./IO/printTitledShortArray.c"
 #endif
 #include <stdlib.h>
 #include "state2steps.c"
@@ -64,9 +65,9 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
     			#ifdef DEBUG
     			if(arraySum(swapState, stateSize) != 6){
     				printf("lowIndex: %d, highIndex: %d\n", lowIndex, highIndex);
-	    			printTitledIntArray("baseState: ", states[stateID], stateSize, 0);
+	    			printTitledShortArray("baseState: ", states[stateID], stateSize, 0);
 	    			printf(", stateSize: %d stateSum: %d\n", stateSize, arraySum(states[stateID], stateSize));		
-	    			printTitledIntArray("swapState: ", swapState, stateSize, 0);
+	    			printTitledShortArray("swapState: ", swapState, stateSize, 0);
 	    			printf(", stateSize: %d stateSum: %d\n", stateSize, arraySum(swapState, stateSize));
 				}
 				#endif
@@ -106,5 +107,19 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 		#endif
 		}
 	}
+	
+	#ifdef DEBUG
+	for(i = 0; i < totalStates; ++i){
+		printf("swapRecord[%d]: ", i);
+		printIntArray(swapRecord[i], tscs);
+		putchar('\n');
+	}
+	printf("Press enter to continue...");
+	char input = 0;
+	while(input != '\n')
+		input = getchar();
+	input = 'x';
+	#endif
+	
 	return swapRecord;
 }

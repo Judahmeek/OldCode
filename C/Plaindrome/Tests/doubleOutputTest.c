@@ -1,13 +1,14 @@
+#define DEBUGDOUBLEOUTPUT
 #include "../IO/doubleOutput.c"
 
 int main(){
 	double x = 0;
-	short prec = 10;
+	short prec = 8;
 	printf("Test: doubleOutput(num: %f, precision: %d) is output as ", x, prec);
 	doubleOutput(x, prec);
 	putchar('\n');
 	
-	x = -26.59867;
+	x = 11.0;
 	printf("Test: doubleOutput(num: %f, precision: %d) is output as ", x, prec);
 	doubleOutput(x, prec);
 	putchar('\n');

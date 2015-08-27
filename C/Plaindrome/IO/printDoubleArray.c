@@ -3,7 +3,7 @@
 
 #include "doubleOutput.c"
 
-void printDoubleArray (const double y[], short precision, short size){
+void printDoubleArray (const double y[], short size, short precision){
 	putchar('{');
 	short i, reducedSize = size - 1;
 	for(i = 0; i < reducedSize; ++i){

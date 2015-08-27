@@ -1,7 +1,8 @@
-#ifdef DEBUG
+#ifdef DEBUGSWAPRECORD
 #include <stdio.h>
 #include "./IO/printTitledIntArray.c"
 #include "./IO/printTitledShortArray.c"
+#include "./IO/systemPause.c"
 #endif
 #include <stdlib.h>
 #include "state2steps.c"
@@ -26,7 +27,7 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 		for(i = 0; i < tscs; ++i){
 			swapRecord[stateID][i] = -1;
 		}
-		#ifdef DEBUG
+		#ifdef DEBUGSWAPRECORD
 		printf("Initialized row %d\n", stateID);
 		#endif
 	}
@@ -38,7 +39,7 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 	
     	lowIndex = 0, highIndex = 1, swapRecordIndex = 0;
     	
-    	#ifdef DEBUG
+    	#ifdef DEBUGSWAPRECORD
     	printf("\nstateID: %d\n", stateID);
     	printTitledIntArray("swapRecord: ", swapRecord[stateID], tscs, 1);
     	scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSig[stateID], &lowIndex, &highIndex, tscs);
@@ -46,12 +47,12 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
     	#endif
     	
     	while(swapRecordIndex < tscs){
-    		#ifdef DEBUG
+    		#ifdef DEBUGSWAPRECORD
     		printf("\nswapRecordIndex: %d tscs: %d\n", swapRecordIndex, tscs);
     		#endif
     		if(states[stateID][lowIndex] == states[stateID][highIndex]){
     			++highIndex;
-    			#ifdef DEBUG
+    			#ifdef DEBUGSWAPRECORD
     			puts("lowIndex and highIndex same. rD increments by one.");
     			#endif
 			}
@@ -62,7 +63,7 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
     			swapState[lowIndex] = states[stateID][highIndex]; //perform int
     			swapState[highIndex] = states[stateID][lowIndex];
     			
-    			#ifdef DEBUG
+    			#ifdef DEBUGSWAPRECORD
     			if(arraySum(swapState, stateSize) != 6){
     				printf("lowIndex: %d, highIndex: %d\n", lowIndex, highIndex);
 	    			printTitledShortArray("baseState: ", states[stateID], stateSize, 0);
@@ -82,25 +83,25 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
     			insertSwapLink(&swapRecord[stateID][swapRecordIndex], &partnerID, &swapRecord[partnerID][bufferSig[partnerID][lowIndex] + swapStateBuffer], &stateID);
     			
     			++swapRecordIndex, ++highIndex;
-    			#ifdef DEBUG
+    			#ifdef DEBUGSWAPRECORD
     			printf("\nSRI incremented to %d\n", swapRecordIndex);
     			#endif
     			scanSwapRecord(swapRecord[stateID], &swapRecordIndex, bufferSig[stateID], &lowIndex, &highIndex, tscs);
-    			#ifdef DEBUG
+    			#ifdef DEBUGSWAPRECORD
     			printf("scan moves lowIndex to %d and highIndex to %d\n", lowIndex, highIndex);
     			#endif
 			}
-			#ifdef DEBUG
+			#ifdef DEBUGSWAPRECORD
 			printf("\nlowIndex: %d, highIndex: %d, stateSize: %d\n", lowIndex, highIndex, stateSize);
 			#endif
 			if(highIndex >= stateSize){
 				++lowIndex;
 				highIndex = lowIndex + 1;
-				#ifdef DEBUG
+				#ifdef DEBUGSWAPRECORD
     			printf("lowIndex changed to %d and highIndex to %d\n", lowIndex, highIndex);
     			#endif
 			}
-		#ifdef DEBUG
+		#ifdef DEBUGSWAPRECORD
 		printf("swapRecord[%d]: ", stateID);
 		printIntArray(swapRecord[stateID], tscs);
 		putchar('\n');
@@ -108,17 +109,13 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 		}
 	}
 	
-	#ifdef DEBUG
+	#ifdef DEBUGSWAPRECORD
 	for(i = 0; i < totalStates; ++i){
 		printf("swapRecord[%d]: ", i);
 		printIntArray(swapRecord[i], tscs);
 		putchar('\n');
 	}
-	printf("Press enter to continue...");
-	char input = 0;
-	while(input != '\n')
-		input = getchar();
-	input = 'x';
+	systemPause();
 	#endif
 	
 	return swapRecord;

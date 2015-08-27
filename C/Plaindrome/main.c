@@ -38,7 +38,9 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 
 */
 
-//#define DEBUG
+#define BASICS
+#define DEBUG
+//#define DEBUGSWAPRECORD
 #include <stdio.h>
 #include "arrayFactorial.c"
 #include "initializeMatrix.c"
@@ -49,6 +51,8 @@ int main() {
 	const short zerothSIZE = SIZE - 1;
     short freq[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     short i,c,stateSize = 0;
+    
+    fputs("Anagram please: ", stdout);
     
     while(c != '\n'){ //input anagram of palindrome
     	c = getchar();
@@ -82,9 +86,11 @@ int main() {
 		int totalStates = factorial(stateSize)/arrayFactorial(freq, freqSize, 0, 0);
 		int posSwaps = stateSize * (stateSize - 1) / 2;
 		
+		#ifdef BASICS
 		printf("Total states: %d\n", totalStates);
 		printf("Total state changing swaps: %d\n", tscs);
 		printf("All possible swaps per state: %d\n", posSwaps);
+		#endif
     	
 		double** MarkovMatrix = initializeMatrix(freq, freqSize, stateSize, totalStates, tscs, posSwaps);
 		//InvertMatrix();

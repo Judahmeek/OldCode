@@ -18,9 +18,9 @@ int main(){
 	doubleOutput(y, prec);
 	putchar('\n');
 	
-	double result = x + y;
-	printf("Test: doubleOutput(num: x + y, precision: %d) is output as ", prec);
-	doubleOutput(result, prec);
+	double z = 0.1;
+	printf("Test: doubleOutput(num: %f, precision: %d) is output as ", z, prec);
+	doubleOutput(z, prec);
 	putchar('\n');
 	
 	return 0;

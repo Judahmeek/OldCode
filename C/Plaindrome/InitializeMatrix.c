@@ -18,8 +18,8 @@ double ** initializeMatrix(const short freq[], short freqSize, short stateSize, 
 	printf("1 / posSwaps: %f\n", singleSwapsPercentageOfPosSwaps);
 	#endif
 	
-	double** markovMatrix = (double **)malloc(sizeof(double *) * totalStates);
-    markovMatrix[0] = (double *)malloc(sizeof(double) * totalStates * totalStates);
+	double** markovMatrix = (double **)calloc(totalStates, sizeof(double *));
+    markovMatrix[0] = (double *)calloc(totalStates * totalStates, sizeof(double));
     for(i = 0; i < totalStates; ++i)
         markovMatrix[i] = (*markovMatrix + totalStates * i);
 	
@@ -39,7 +39,7 @@ double ** initializeMatrix(const short freq[], short freqSize, short stateSize, 
         markovMatrix[i][i] = stmsPercentageOfPosSwaps;
         for(swapRecordIndex = 0; swapRecordIndex < tscs; ++swapRecordIndex){
         	#ifdef DEBUG
-        	if(i > -1 && i < 2)
+        	if(i > -1 && i < 1)
         		printf("markovMatrix[%d][swapRecord[%d][%d]: %d] = %f;\n", i, i, swapRecordIndex, swapRecord[i][swapRecordIndex], singleSwapsPercentageOfPosSwaps);
         	#endif
         	markovMatrix[i][swapRecord[i][swapRecordIndex]] = singleSwapsPercentageOfPosSwaps;
@@ -49,7 +49,9 @@ double ** initializeMatrix(const short freq[], short freqSize, short stateSize, 
 	#endif
 	}
 	
-	displayMatrix((double*)markovMatrix, totalStates);
+	#ifdef BASICS
+	displayMatrix(markovMatrix[0], totalStates, 2);
+	#endif
 	
 	return markovMatrix;
 }

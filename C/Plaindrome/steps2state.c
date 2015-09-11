@@ -13,8 +13,8 @@
 The purpose of this function is to convert a state that is referenced by the number of steps between it and the "minimal state" back into a string.
 The "minimal state" is the state created by step 0. Example: Freq[2,2,2,1] => Result[a,a,b,b,c,c,d].
 */
-void steps2state(const short freq[], short freqSize, short result[], short resultSize, int steps){
-	short sigSize = resultSize - 1;
+void steps2state(const short freq[], short freqSize, short result[], short stateSize, int steps){
+	short sigSize = stateSize - 1;
 	int sig[sigSize];
 	short i = 0, j = 0, target = 0;
 	

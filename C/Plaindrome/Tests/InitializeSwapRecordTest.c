@@ -1,7 +1,8 @@
-//#define DEBUG
+#define DEBUGSWAPRECORD
+//#define DEBUGSCANSWAPRECORD
 #include "../digitSize_i.c"
 #include "../InitializeSwapRecord.c"
-#ifndef DEBUG
+#ifndef DEBUGSWAPRECORD
 #include "../IO/printTitledShortArray.c"
 #include "../IO/printIntArray.c"
 #endif

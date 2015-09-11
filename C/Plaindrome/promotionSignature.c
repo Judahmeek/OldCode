@@ -17,12 +17,16 @@ void promotionSignature (const short freq[], short freqSize, int result[], short
 	for(i = 0; i < startingIndex; ++i){
 		result[i] = -1;
 	}
+	
 	for(; i < resultSize; ++i){
+		#ifdef DEBUGPROMOTIONSIGNATURE
+		printf("result[i: %d] = factorial(remainingDigits: %d): %d / arrayFactorial(freq, freqSize, j: %d, k: %d): %d\n", i, remainingDigits, factorial(remainingDigits), j, k, arrayFactorial(freq, freqSize, j, k));
+		#endif
 		result[i] = factorial(remainingDigits) / arrayFactorial(freq, freqSize, j, k);
 		if(!result[i])
 			++result[i];
 		++k;
-		if(k == freq[j]){
+		while(k == freq[j]){
 			++j;
 			k = 0;
 		}

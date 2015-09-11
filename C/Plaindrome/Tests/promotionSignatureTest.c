@@ -1,27 +1,20 @@
-#include "../IO/printTitledIntArray.c"
-#include "../arraySum.c"
-#include "../intArrayCompare.c"
+#define DEBUGPROMOTIONSIGNATURE
+#include "../IO/printTitledShortArray.c"
+#include "../IO/printIntArray.c"
 #include "../promotionSignature.c"
 
 int main() {
-	short freq[] = {3, 2, 2};
-	short freqSize = 3;
-	short startingIndex = 0;
-	short resultSize = arraySum(freq, 3) - 1;
+	short freq[] = {1, 0, 2, 1};
+	short freqSize = 4;
+	short startingIndex = 2;
+	short resultSize = 6;
 	int result[resultSize];
-	int target[] = {90, 30, 6, 3, 1, 1};
-	
-	--freq[0];	
+		
 	promotionSignature(freq, freqSize, result, resultSize, startingIndex);
 	
-	printTitledIntArray("promotionSignature(freq: ", freq, freqSize, 0);
+	printTitledShortArray("promotionSignature(freq: ", freq, freqSize, 0);
 	printf(", freqSize: %d, result[], resultSize: %d, startingIndex: %d) == ", freqSize, resultSize, startingIndex);
-	printIntArray(target, resultSize);
-	
-	if(!intArrayCompare(result, target, resultSize))
-		puts(" : Passed");
-	else
-		puts(" : Failed");
+	printIntArray(result, resultSize);
 		
 	return 0;
 }

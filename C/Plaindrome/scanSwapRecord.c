@@ -1,16 +1,27 @@
 #ifndef SCANSWAPRECORD
 #define SCANSWAPRECORD
 
-void scanSwapRecord(int swapRow[], short* swapRecordIndexPtr, short bufferSignatureRow[], short* lowIndexPtr, short* highIndexPtr, short tscs){
+#ifdef DEBUGSCANSWAPRECORD
+#include <stdio.h>
+#include "./IO/printShortArray.c"
+#include "./IO/systemPause.c"
+#endif
+
+#include "skipNonStateChangingSwaps.c"
+
+void scanSwapRecord(short* state, short stateSize, int swapRow[], short* swapRecordIndexPtr, short bufferSignatureRow[], short* lowIndexPtr, short* highIndexPtr, short tscs){
+	#ifdef DEBUGSCANSWAPRECORD
+	printShortArray(state, stateSize);
+	putchar('\n');
+	#endif
 	while(swapRow[*swapRecordIndexPtr] != -1 && *swapRecordIndexPtr < tscs){
 		++*swapRecordIndexPtr;
-		if(*swapRecordIndexPtr > bufferSignatureRow[*lowIndexPtr]){
-			++*lowIndexPtr;
-			*highIndexPtr = *lowIndexPtr + 1;
-		} else {
-			*highIndexPtr = swapRow[*swapRecordIndexPtr] + 1;
-		}
+		skipNonStateChangingSwaps(state, stateSize, swapRecordIndexPtr, bufferSignatureRow, lowIndexPtr, highIndexPtr);
 	}
+	#ifdef DEBUGSCANSWAPRECORD
+	printf("Final SRI: %d low: %d high: %d\n", *swapRecordIndexPtr, *lowIndexPtr, *highIndexPtr);
+	systemPause();
+	#endif
 }
 
 #endif //SCANSWAPRECORD

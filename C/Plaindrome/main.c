@@ -59,7 +59,7 @@ int main() {
 	const short zerothSIZE = SIZE - 1;
     short freq[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     
-    fputs("Anagram please: ", stdout);
+    fputs("Anagram please: ", stdout); //need a quick fix for single character entries
     
     
     short i,c,memLimit = 8, stateSize = 0;
@@ -132,8 +132,10 @@ int main() {
 		int* palList = palindromeList(freq, freqHalf, freqSize, stateSize, numPalindrome);
 		sanitizeSwapRecord(swapRecord, palList, numPalindrome, tscs);
 		double** MarkovMatrix = prepareFundamentalMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
-		//int matrixRow = findMatrixRow(swapRecord, stateID);
-		//CalculateFundamentalMatrix();
+		int matrixRow = findMatrixRow(palList, numPalindrome, inputStateID);
+		int *statesToTrack = &matrixRow;
+		int arraySize = 1;
+		//invertMatrix(MarkovMatrix, totalStates - numPalindrome, statesToTrack, arraySize);
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();
 		//OutputResult();
 	}

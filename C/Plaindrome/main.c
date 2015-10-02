@@ -40,7 +40,7 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 
 #define BASICS
 //#define DEBUGSWAPRECORD
-#define DEBUGINITIALIZEMATRIX
+#define DEBUGPREPAREFUNDAMENTALMATRIX
 #ifdef BASICS
 #include "./IO/printTitledShortArray.c"
 #include "./IO/systemPause.c"
@@ -49,7 +49,7 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 #include <stdlib.h>
 #include "arrayFactorial.c"
 #include "findMatrixRow.c"
-#include "initializeMatrix.c"
+#include "prepareFundamentalMatrix.c"
 #include "ReversedHeapsort.c"
 #include "palindromeList.c"
 #include "sanitizeSwapRecord.c"
@@ -131,7 +131,7 @@ int main() {
 		int** swapRecord = initializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
 		int* palList = palindromeList(freq, freqHalf, freqSize, stateSize, numPalindrome);
 		sanitizeSwapRecord(swapRecord, palList, numPalindrome, tscs);
-		double** MarkovMatrix = initializeMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
+		double** MarkovMatrix = prepareFundamentalMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
 		//int matrixRow = findMatrixRow(swapRecord, stateID);
 		//CalculateFundamentalMatrix();
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();

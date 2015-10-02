@@ -1,4 +1,4 @@
-#ifdef DEBUGINITIALIZEMATRIX
+#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
 #include "./IO/systemPause.c"
 #endif
 #include "initializeSwapRecord.c"
@@ -9,12 +9,15 @@
 /*	To save time, the markov matrix is initiated to I - Q, where I is the identity matrix of the transition matrix Q
 */
 
-double ** initializeMatrix(int** swapRecord, int totalStates, int tscs, int* palList, short numPalindrome, int posSwaps){
+double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, int* palList, short numPalindrome, int posSwaps){
 	
 	int i;
 	int swapsThatMaintainState = (posSwaps - tscs);
 	double stmsPercentageOfPosSwaps = (double)swapsThatMaintainState/(double)posSwaps;
 	double singleSwapsPercentageOfPosSwaps = 1.0/(double)posSwaps;
+	//prep for fundamental matrix (I - Q)^-1 is I - Q
+	double identityMatrixMinusSTMSPOPS = 1.0 - stmsPercentageOfPosSwaps;
+	double identityMatrixMinusSSPOPS = -singleSwapsPercentageOfPosSwaps;
 	
 	#ifdef BASICS
 	printf("swapsThatMaintainState: %d\n", swapsThatMaintainState);
@@ -23,10 +26,10 @@ double ** initializeMatrix(int** swapRecord, int totalStates, int tscs, int* pal
 	#endif
 	
 	int transitionMatrixSize = totalStates - numPalindrome;
-	double** markovMatrix = (double **)malloc(transitionMatrixSize * sizeof(double *));
-    markovMatrix[0] = (double *)calloc(transitionMatrixSize * transitionMatrixSize, sizeof(double));
+	double** matrix = (double **)malloc(transitionMatrixSize * sizeof(double *));
+    matrix[0] = (double *)calloc(transitionMatrixSize * transitionMatrixSize * 2, sizeof(double));
     for(i = 0; i < transitionMatrixSize; ++i)
-        markovMatrix[i] = (markovMatrix[0] + transitionMatrixSize * i);
+        matrix[i] = (matrix[0] + transitionMatrixSize * 2 * i);
 	
 	int j = 0;
 	short swapRecordIndex;
@@ -35,10 +38,11 @@ double ** initializeMatrix(int** swapRecord, int totalStates, int tscs, int* pal
         while(swapRecord[j][0] == -tscs) //if state == palindrome
         	++j; //move to the next state
         
-        markovMatrix[i][findMatrixRow(palList, numPalindrome, j)] = stmsPercentageOfPosSwaps;
-    	#ifdef DEBUGINITIALIZEMATRIX
+        matrix[i][findMatrixRow(palList, numPalindrome, j)] = identityMatrixMinusSTMSPOPS;
+        matrix[i][findMatrixRow(palList, numPalindrome, j) + transitionMatrixSize] = 1.0;
+    	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
     	if(i == 9) //bounds for limiting what is displayed
-        	printf("markovMatrix[%d]findMatrixRow(palList, numPalindrome, %d): %d] = %f;\n", i, j, findMatrixRow(palList, numPalindrome, j), stmsPercentageOfPosSwaps);
+        	printf("matrix[%d]findMatrixRow(palList, numPalindrome, %d): %d] = %f;\n", i, j, findMatrixRow(palList, numPalindrome, j), identityMatrixMinusSTMSPOPS);
     	#endif
         
 		if(swapRecord[j][0] < 0)
@@ -47,24 +51,25 @@ double ** initializeMatrix(int** swapRecord, int totalStates, int tscs, int* pal
 			swapRecordIndex = 0;
 		
         for(; swapRecordIndex < tscs; ++swapRecordIndex){
-        	#ifdef DEBUGINITIALIZEMATRIX
-        	if(i == 9){ //bounds for limiting what is displayed
+        	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
+        	if(i == 0){ //bounds for limiting what is displayed
 				printf("swapRecord[%d]: ", j);
 				printIntArray(swapRecord[j], tscs);
 				putchar('\n');
-        		printf("markovMatrix[%d]findMatrixRow(palList, numPalindrome, [swapRecord[%d][%d]): %d] = %f;\n", i, j, swapRecordIndex, findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex]), singleSwapsPercentageOfPosSwaps);
+        		printf("matrix[%d]findMatrixRow(palList, numPalindrome, [swapRecord[%d][%d]): %d] = %f;\n", i, j, swapRecordIndex, findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex]), identityMatrixMinusSSPOPS);
+
         	}
 			#endif
-        	markovMatrix[i][findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex])] = singleSwapsPercentageOfPosSwaps;
+        	matrix[i][findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex])] = identityMatrixMinusSSPOPS;
 		}
-	#ifdef DEBUGINITIALIZEMATRIX
+	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
 	//systemPause();
 	#endif
 	}
 	
-	#ifdef DEBUGINITIALIZEMATRIX
-	printDoubleArrayAs2D("Markov Matrix: ", markovMatrix[0], transitionMatrixSize, transitionMatrixSize, 2);
+	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
+	printDoubleArrayAs2D("Preliminary Fundamental Matrix: ", matrix[0], transitionMatrixSize * 2, transitionMatrixSize, 2);
 	#endif
 	
-	return markovMatrix;
+	return matrix;
 }

@@ -1,15 +1,16 @@
+//#define DEBUGSTATE2STEPS
 #include "../IO/printTitledShortArray.c"
-#include "../findMaxPowOf10_i.c"
+#include "../digitSize_i.c"
 #include "../arraySum.c"
 #include "../state2steps.c"
 
 int main() {
-	const short freq[] = {2, 2, 2, 1};
-	short freqSize = 4;
+	const short freq[] = {2, 2, 1};
+	short freqSize = 3;
 	short stateSize = arraySum(freq, freqSize);
 	short uBound = factorial(stateSize)/arrayFactorial(freq, freqSize, 0, 0);
 	short result[stateSize];
-	short input = 0, width = findMaxPowOf10_i(uBound);
+	short input = 0, width = digitSize_i(uBound);
 	int steps, steps2;
 	for(steps = 0;steps < uBound; ++steps){
 		printf("Steps: %*d -> ", width, steps);

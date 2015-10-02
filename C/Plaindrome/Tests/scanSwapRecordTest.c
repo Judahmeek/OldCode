@@ -1,70 +1,93 @@
 #include "../IO/printShortArray.c"
-#include "../IO/printTitledSwapArray.c"
+#include "../IO/printTitledIntArray.c"
 #include "../scanSwapRecord.c"
 
 int main(){ //freq[] = {2, 2};
-	swap swapRow[] = {{-1, -1}, {0, 0}, {-1, -1}, {3, 4}};
-	short rowSize = 4;
-	short bufferSignatureRow[] = {0, 2, 4, 4};
-	short swapRecordIndex = 0, leftDigit = 0, rightDigit = 1, tscs = 4;
+	int swapRow[] = {-1, -1, 0, -1, 0, 0, -1, 3};
+	short bufferSignatureRow[] = {3, 5, 7, 8};
+	short tscs = 8, stateSize = 5, sigSize = 4;
+	short state[] = {0, 1, 1, 0, 2};
 	
-	//Testing empty swap behavior
-	printTitledSwapArray("scanSwapRecord(", swapRow, rowSize, 0);
+	//Testing empty int behavior
+	short swapRecordIndex = 0, lowIndex = 0, highIndex = 1;
+	
+	printTitledIntArray("scanSwapRecord(", swapRow, tscs, 0);
 	printf(", SRI: %d, ", swapRecordIndex);
-	printShortArray(bufferSignatureRow, rowSize);
-	printf(" LD: %d, RD: %d)", leftDigit, rightDigit);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d)", lowIndex, highIndex);
 	puts("checks swapRow[0] and stops.");
 	
-	scanSwapRecord(swapRow, &swapRecordIndex, bufferSignatureRow, &leftDigit, &rightDigit, tscs);
+	scanSwapRecord(state, stateSize, swapRow, &swapRecordIndex, bufferSignatureRow, &lowIndex, &highIndex, tscs);
 		
-	printTitledSwapArray("Results: (", swapRow, rowSize, 0);
+	printTitledIntArray("Results: (", swapRow, tscs, 0);
 	printf(", SRI: %d, ", swapRecordIndex);
-	printShortArray(bufferSignatureRow, rowSize);
-	printf(" LD: %d, RD: %d\n)", leftDigit, rightDigit);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d\n)", lowIndex, highIndex);
 	
-	if(swapRecordIndex == 0 && leftDigit == 0 && rightDigit == 1)
+	if(swapRecordIndex == 0 && lowIndex == 0 && highIndex == 1)
 		puts("PASSED");
 	else
 		puts("FAILED");
 	
-	//Testing filled swap behavior
-	swapRecordIndex = 1;
+	//Testing single filled swap with highIndex at bufferSig limit
+	swapRecordIndex = 2, lowIndex = 0, highIndex = 4;
 	
-	printTitledSwapArray("scanSwapRecord(", swapRow, rowSize, 0);
+	printTitledIntArray("\nscanSwapRecord(", swapRow, tscs, 0);
 	printf(", SRI: %d, ", swapRecordIndex);
-	printShortArray(bufferSignatureRow, rowSize);
-	printf(" LD: %d, RD: %d)", leftDigit, rightDigit);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d)", lowIndex, highIndex);
 	puts("checks swapRow[1], increments swapRecordIndex, and then stops.");
 	
-	scanSwapRecord(swapRow, &swapRecordIndex, bufferSignatureRow, &leftDigit, &rightDigit, tscs);
+	scanSwapRecord(state, stateSize, swapRow, &swapRecordIndex, bufferSignatureRow, &lowIndex, &highIndex, tscs);
 		
-	printTitledSwapArray("Results: (", swapRow, rowSize, 0);
+	printTitledIntArray("Results: (", swapRow, tscs, 0);
 	printf(", SRI: %d, ", swapRecordIndex);
-	printShortArray(bufferSignatureRow, rowSize);
-	printf(" LD: %d, RD: %d\n)", leftDigit, rightDigit);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d\n)", lowIndex, highIndex);
 	
-	if(swapRecordIndex == 2 && leftDigit == 1 && rightDigit == 2)
+	if(swapRecordIndex == 3 && lowIndex == 1 && highIndex == 3)
+		puts("PASSED");
+	else
+		puts("FAILED");
+		
+	//Testing double filled swaps
+	swapRecordIndex = 4, lowIndex = 1, highIndex = 4;
+	
+	printTitledIntArray("\nscanSwapRecord(", swapRow, tscs, 0);
+	printf(", SRI: %d, ", swapRecordIndex);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d)", lowIndex, highIndex);
+	puts("checks swapRow[1], increments swapRecordIndex, and then stops.");
+	
+	scanSwapRecord(state, stateSize, swapRow, &swapRecordIndex, bufferSignatureRow, &lowIndex, &highIndex, tscs);
+		
+	printTitledIntArray("Results: (", swapRow, tscs, 0);
+	printf(", SRI: %d, ", swapRecordIndex);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d\n)", lowIndex, highIndex);
+	
+	if(swapRecordIndex == 6 && lowIndex == 2 && highIndex == 4)
 		puts("PASSED");
 	else
 		puts("FAILED");
 	
-	//Testing filled swap & end of scanRecord behavior
-	swapRecordIndex = 3;
+	//Testing filled swap @ end of swapRow
+	swapRecordIndex = 7, lowIndex = 3, highIndex = 4;
 	
-	printTitledSwapArray("scanSwapRecord(", swapRow, rowSize, 0);
+	printTitledIntArray("\nscanSwapRecord(", swapRow, tscs, 0);
 	printf(", SRI: %d, ", swapRecordIndex);
-	printShortArray(bufferSignatureRow, rowSize);
-	printf(" LD: %d, RD: %d)", leftDigit, rightDigit);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d)", lowIndex, highIndex);
 	puts("checks swapRow[3], increments swapRecordIndex, and then stops.");
 	
-	scanSwapRecord(swapRow, &swapRecordIndex, bufferSignatureRow, &leftDigit, &rightDigit, tscs);
+	scanSwapRecord(state, stateSize, swapRow, &swapRecordIndex, bufferSignatureRow, &lowIndex, &highIndex, tscs);
 		
-	printTitledSwapArray("Results: (", swapRow, rowSize, 0);
+	printTitledIntArray("Results: (", swapRow, tscs, 0);
 	printf(", SRI: %d, ", swapRecordIndex);
-	printShortArray(bufferSignatureRow, rowSize);
-	printf(" LD: %d, RD: %d\n)", leftDigit, rightDigit);
+	printShortArray(bufferSignatureRow, sigSize);
+	printf(" LD: %d, RD: %d\n)", lowIndex, highIndex);
 	
-	if(swapRecordIndex == 4 && leftDigit == 2 && rightDigit == 3)
+	if(swapRecordIndex == 8 && lowIndex == 4 && highIndex == 5)
 		puts("PASSED");
 	else
 		puts("FAILED");

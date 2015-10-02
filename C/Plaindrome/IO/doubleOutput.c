@@ -16,7 +16,6 @@ void doubleOutput(double num, short precision){
 		intOutput((int)num);
 		putchar('.');
 		
-		double remainder = (num - (int)num);
 		num -= (int)num;
 		int decimal = 0;
 		short c;
@@ -31,9 +30,9 @@ void doubleOutput(double num, short precision){
 				decimal += 10;
 			decimal /= 10;
 		}else{
-			while(precision){
-			putchar('0');
 			--precision;
+			while(--precision){
+			putchar('0');
 			}
 		}
 		intOutput(decimal);

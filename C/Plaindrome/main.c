@@ -41,6 +41,7 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 #define BASICS
 //#define DEBUGSWAPRECORD
 #define DEBUGPREPAREFUNDAMENTALMATRIX
+#define DEBUGINVERTMATRIX
 #ifdef BASICS
 #include "./IO/printTitledShortArray.c"
 #include "./IO/systemPause.c"
@@ -49,6 +50,7 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 #include <stdlib.h>
 #include "arrayFactorial.c"
 #include "findMatrixRow.c"
+#include "invertMatrix.c"
 #include "prepareFundamentalMatrix.c"
 #include "ReversedHeapsort.c"
 #include "palindromeList.c"
@@ -135,7 +137,7 @@ int main() {
 		int matrixRow = findMatrixRow(palList, numPalindrome, inputStateID);
 		int *statesToTrack = &matrixRow;
 		int arraySize = 1;
-		//invertMatrix(MarkovMatrix, totalStates - numPalindrome, statesToTrack, arraySize);
+		invertMatrix(MarkovMatrix, totalStates - numPalindrome, statesToTrack, arraySize);
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();
 		//OutputResult();
 	}

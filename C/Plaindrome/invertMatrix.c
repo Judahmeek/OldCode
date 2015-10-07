@@ -18,6 +18,7 @@ invertMatrix (double** Matrix, int matrixSize, int* statesToTracpivot, int sttSi
 	int i, j, pivot, max;
 	int temp[matrixSize];
 	for (pivot = 0; pivot < matrixSize; ++pivot){
+	printDoubleArrayAs2D("Fundamental matrix: ", matrix, rows, columns, 2);
 		max = pivot;
 		
 		for(i = pivot + 1, i < matrixSize; ++i){
@@ -44,6 +45,9 @@ invertMatrix (double** Matrix, int matrixSize, int* statesToTracpivot, int sttSi
 				Matrix[i][j]  := Matrix[i][j] - Matrix[pivot][j] * (Matrix[i][pivot] / Matrix[pivot][pivot])
 			}
 			Matrix[i][pivot] = 0;
+		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
 		}
+		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
 	}
+	printDoubleArrayAs2D("Inverted Fundamental matrix: ", matrix, rows, columns, 2);
 }

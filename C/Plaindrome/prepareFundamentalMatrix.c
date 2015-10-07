@@ -68,7 +68,7 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
 	}
 	
 	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
-	printDoubleArrayAs2D("Preliminary Fundamental Matrix: ", matrix[0], transitionMatrixSize * 2, transitionMatrixSize, 2);
+	printDoubleArrayAs2D("Preliminary Fundamental Matrix: ", matrix[0], transitionMatrixRows, transitionMatrixColumns, 2);
 	#endif
 	
 	return matrix;

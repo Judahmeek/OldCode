@@ -1,53 +1,94 @@
-/*
-for pivot = 1 ... min(m,n):
-   Find the pivot-th pivot:
-   i_max  := argmax (i = pivot ... m, abs(Matrix[i, pivot]))
-   if Matrix[i_max, pivot] = 0
-     error "Matrix is singular!"
-   swap rows(pivot, i_max)
-   Do for all rows below pivot:
-   for i = pivot + 1 ... m:
-     Do for all remaining elements in current row:
-     for j = pivot + 1 ... n:
-       Matrix[i, j]  := Matrix[i, j] - Matrix[pivot, j] * (Matrix[i, pivot] / Matrix[pivot, pivot])
-     Fill lower triangular matrix with zeros:
-     Matrix[i, pivot]  := 0
-*/
+#ifdef DEBUGINVERTMATRIX
+#include "./IO/printDoubleArrayAs2D.c"
+#include "./IO/printTitledIntArray.c"
+#include "./IO/systemPause.c"
+#endif
 
-invertMatrix (double** Matrix, int matrixSize, int* statesToTracpivot, int sttSize){
-	int i, j, pivot, max;
-	int temp[matrixSize];
-	for (pivot = 0; pivot < matrixSize; ++pivot){
+invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int sttSize){
+
+	#ifdef DEBUGINVERTMATRIX
 	printDoubleArrayAs2D("Fundamental matrix: ", matrix, rows, columns, 2);
+	printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
+	systemPause();
+	putchar('\n');
+	#endif
+	
+	int i, j, pivot, max, stopPivot = rows - 1, subtractor;
+	int* tempPtr;
+	for (pivot = 0; pivot < stopPivot; ++pivot){
 		max = pivot;
+		#ifdef DEBUGINVERTMATRIX
+		printf("step %d\n", pivot);
+		#endif
 		
-		for(i = pivot + 1, i < matrixSize; ++i){
-			if(abs(Matrix[i][pivot]) > abs(Matrix[max][pivot])){
+		for(i = pivot + 1; i < rows; ++i){
+			if(abs(matrix[i][pivot]) > abs(matrix[max][pivot])){
 				max = i;
 			}
 		}
 		
+		#ifdef DEBUGINVERTMATRIX
+		printf("max found: %d\n", max);
+		#endif
+		
 		for(i = 0; i < sttSize; ++i){
-			if(statesToTracpivot[i] == max)
-				statesToTracpivot[i] = pivot;
-			else if (statesToTracpivot[i] == pivot)
-				statesToTracpivot[i] = max;
+			if(statesToTrackPtr[i] == max)
+				statesToTrackPtr[i] = pivot;
+			else if (statesToTrackPtr[i] == pivot)
+				statesToTrackPtr[i] = max;
 		}
 		
-		for(i = 0; i < matrixSize; ++i){
-			temp[i] = Matrix[pivot][i];
-			Matrix[pivot][i] = Matrix[max][i];
-			Matrix[max][i] = temp[i];
+		if(max != pivot){
+			tempPtr = matrix[pivot];
+			matrix[pivot] = matrix[max];
+			matrix[max] = tempPtr;
 		}
 		
-		for(i = pivot + 1, i < matrixSize; ++i){
-			for(j = pivot + 1, j < matrixSize; ++j){
-				Matrix[i][j]  := Matrix[i][j] - Matrix[pivot][j] * (Matrix[i][pivot] / Matrix[pivot][pivot])
+		for(i = pivot + 1; i < rows; ++i){
+			for(j = pivot + 1; j < columns; ++j){
+				matrix[i][j] = matrix[i][j] - matrix[pivot][j] * (matrix[i][pivot] / matrix[pivot][pivot]);
 			}
-			Matrix[i][pivot] = 0;
-		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
+			matrix[i][pivot] = 0;
 		}
+		
+		#ifdef DEBUGINVERTMATRIX
 		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
+		printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
+		systemPause();
+		putchar('\n');
+		#endif
 	}
+	
+	for(; pivot > 0; --pivot){
+		rowAbove = pivot - 1;
+		if(matrix[pivot][pivot] != 1){
+			for(i = rows; i < columns; ++i)
+				matrix[pivot][i] /= matrix[pivot][pivot];
+			matrix[pivot][pivot] = 1;
+		}
+		
+		for(subtractor = pivot; subtractor < rows; ++subtractor){
+			if(matrix[rowAbove][subtractor] != 0)
+				for(i = rows; i < columns; ++i)
+					matrix[rowAbove][i] -= matrix[subtractor][i] * matrix[rowAbove][subtractor];
+			matrix[rowAbove][subtractor] = 0;
+		}
+		
+		#ifdef DEBUGINVERTMATRIX
+		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
+		printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
+		systemPause();
+		putchar('\n');
+		#endif
+
+	}
+	
+	for(i = rows; i < columns; ++i)
+		matrix[pivot][i] /= matrix[pivot][pivot];
+	matrix[pivot][pivot] = 1;
+	
+	#ifdef DEBUGINVERTMATRIX
 	printDoubleArrayAs2D("Inverted Fundamental matrix: ", matrix, rows, columns, 2);
+	printTitledIntArray("Modified target states: ", statesToTrackPtr, sttSize, 1);
+	#endif
 }

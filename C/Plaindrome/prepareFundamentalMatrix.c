@@ -25,21 +25,22 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
 	printf("1 / posSwaps: %f\n", singleSwapsPercentageOfPosSwaps);
 	#endif
 	
-	int transitionMatrixSize = totalStates - numPalindrome;
-	double** matrix = (double **)malloc(transitionMatrixSize * sizeof(double *));
-    matrix[0] = (double *)calloc(transitionMatrixSize * transitionMatrixSize * 2, sizeof(double));
-    for(i = 0; i < transitionMatrixSize; ++i)
-        matrix[i] = (matrix[0] + transitionMatrixSize * 2 * i);
+	int transitionMatrixRows = totalStates - numPalindrome;
+	int transitionMatrixColumns = transitionMatrixRows * 2;
+	double** matrix = (double **)malloc(transitionMatrixRows * sizeof(double *));
+	matrix[0] = (double *)calloc(transitionMatrixRows * transitionMatrixColumns, sizeof(double));
+	for(i = 0; i < transitionMatrixRows; ++i)
+		matrix[i] = (matrix[0] + transitionMatrixColumns * i);
 	
 	int j = 0;
 	short swapRecordIndex;
-	for(i = 0; i < transitionMatrixSize; ++i, ++j){
+	for(i = 0; i < transitionMatrixRows; ++i, ++j){
     	
         while(swapRecord[j][0] == -tscs) //if state == palindrome
         	++j; //move to the next state
         
         matrix[i][findMatrixRow(palList, numPalindrome, j)] = identityMatrixMinusSTMSPOPS;
-        matrix[i][findMatrixRow(palList, numPalindrome, j) + transitionMatrixSize] = 1.0;
+        matrix[i][findMatrixRow(palList, numPalindrome, j) + transitionMatrixRows] = 1.0;
     	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
     	if(i == 9) //bounds for limiting what is displayed
         	printf("matrix[%d]findMatrixRow(palList, numPalindrome, %d): %d] = %f;\n", i, j, findMatrixRow(palList, numPalindrome, j), identityMatrixMinusSTMSPOPS);

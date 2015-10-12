@@ -12,20 +12,18 @@ main(){
 	matrix[0] = (double *)calloc(rows * columns, sizeof(double));
 	for(i = 0; i < rows; ++i)
 		matrix[i] = (matrix[0] + columns * i);
-		
-	for(i = 0; i<rows; ++i){
-		for(j = 0; j<rows; ++j){
-			matrix[i][j] = i + j;
-		}
-		matrix[i][i + rows] = 1;
-	}
 	
-	matrix[rows - 1][rows - 1] += 1;
+	double array[] =  {1, 0, 4, 1, 0, 0};
+	matrix[0] = &array;
+	double array1[] = {0, 3, 1, 0, 1, 0};
+	matrix[1] = &array1;
+	double array2[] = {.5, 1, 2, 0, 0, 1};
+	matrix[2] = &array2;
 	
 	/*
-	0 1 2
-	1 2 3
-	2 3 4
+	 1 0 4 ->  -5 -4 12
+	 0 3 1 -> -.5  0  1
+	.5 1 2 -> 1.5  1 -3
 	*/
 	
 	int sttSize = 1;

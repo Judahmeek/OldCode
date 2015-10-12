@@ -13,8 +13,8 @@ invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int
 	putchar('\n');
 	#endif
 	
-	int i, j, pivot, max, stopPivot = rows - 1, subtractor;
-	int* tempPtr;
+	int i, j, pivot, max, stopPivot = rows - 1, subtractor, rowAbove;
+	double* tempPtr;
 	for (pivot = 0; pivot < stopPivot; ++pivot){
 		max = pivot;
 		#ifdef DEBUGINVERTMATRIX

@@ -63,11 +63,12 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 #include "sanitizeSwapRecord.c"
 
 int main() {
-    short freq[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     
     fputs("Anagram please: ", stdout);
     
+    const short SIZE = 26;
     short i,c,memLimit = 8, stateSize = 0;
+    short* freq = (short*)calloc(SIZE, sizeof(short));
     short* inputState = (short*)malloc(sizeof(short) * memLimit);
     while(c != '\n'){ //input anagram of palindrome
     	c = getchar();
@@ -91,7 +92,7 @@ int main() {
     }
 	
     short odd = 0, freqSize = 0, oddValue; //test for palindrome qualities
-    for(i = 0; i<26; ++i){
+    for(i = 0; i<SIZE; ++i){
         if(freq[i] > 0){
         	++freqSize;
 		}
@@ -101,9 +102,16 @@ int main() {
     	puts("0.0000");
 	else{
 		
+		#ifdef BASICS
+			printTitledShortArray("freq: ", freq, SIZE, 1);
+			#ifdef ENABLEPAUSE
+				systemPause();
+			#endif
+		#endif
+		
 		short newFreq[freqSize];
 		c = -1;
-		for(i = 0; i<26; ++i){
+		for(i = 0; i<SIZE; ++i){
 			if(freq[i] > 0){
 				if(freq[i] % 2 != 0){
 					++odd;
@@ -123,9 +131,11 @@ int main() {
 				inputState[i] = freq[inputState[i]];
 			}
 			
+			free(freq);
+			
 			#ifdef BASICS
 				printTitledShortArray("Input State: ", inputState, stateSize, 1);
-				printTitledShortArray("freq: ", freq, 26, 1);
+				printTitledShortArray("freq: ", freq, SIZE, 1);
 				printTitledShortArray("Frequencies: ", newFreq, freqSize, 1);
 				#ifdef ENABLEPAUSE
 					systemPause();

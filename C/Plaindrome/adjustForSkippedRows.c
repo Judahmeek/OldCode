@@ -1,38 +1,42 @@
-#ifndef FINDMATRIXROW
-#define FINDMATRIXROW
+#ifndef ADJUSTFORSKIPPEDROWS
+#define ADJUSTFORSKIPPEDROWS
 
-#ifdef DEBUGFINDMATRIXROW
-#include <stdio.h>
-#include "./IO/systemPause.c"
+#ifdef DEBUGADJUSTFORSKIPPEDROWS
+	#include <stdio.h>
+	#include "./IO/systemPause.c"
 #endif
 
-int findMatrixRow(const int* palList, short numPalindrome, int inputStateID){
+int adjustForSkippedRows (const int* palList, short numPalindrome, int state){
 	
 	short low = -1, high = numPalindrome, middle = numPalindrome/2;
 	while(high - low != 1){
-    	if(palList[middle] - inputStateID > 0){
-    		#ifdef DEBUGFINDMATRIXROW
-			printf("(palList[middle]: %d - inputStateID: %d ): %d > 0\n", palList[middle], inputStateID, palList[middle] - inputStateID);
-			systemPause();
+    	if(palList[middle] - state > 0){
+    		#ifdef DEBUGADJUSTFORSKIPPEDROWS
+				printf("(palList[middle]: %d - state: %d ): %d > 0\n", palList[middle], state, palList[middle] - state);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
 			#endif
     		high = middle;
     		middle = (high - low)/2 + low;
 		} else {
-			#ifdef DEBUGFINDMATRIXROW
-			printf("(palList[middle]: %d - inputStateID: %d ): %d < 0\n", palList[middle], inputStateID, palList[middle] - inputStateID);
-			systemPause();
+			#ifdef DEBUGADJUSTFORSKIPPEDROWS
+				printf("(palList[middle]: %d - state: %d ): %d < 0\n", palList[middle], state, palList[middle] - state);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
 			#endif
     		low = middle;
     		middle = (high - low)/2 + low;
 		}
 	}
-	inputStateID = inputStateID - high;
+	state = state - high;
 	
-	#ifdef DEBUGFINDMATRIXROW
-	printf("findMatrixRow Result: %d", inputStateID);
+	#ifdef DEBUGADJUSTFORSKIPPEDROWS
+		printf("adjustForSkippedRows Result: %d", state);
 	#endif
 	
-	return inputStateID;
+	return state;
 }
 
-#endif //FINDMATRIXROW
+#endif //ADJUSTFORSKIPPEDROWS

@@ -49,8 +49,8 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
         		printf("swapRecord[j: %d][0]: %d == -tscs: %d\n", j, swapRecord[j][0], -tscs);
         	#endif
         
-        matrix[i][findMatrixRow(palList, numPalindrome, j)] = identityMatrixMinusSTMSPOPS;
-        matrix[i][findMatrixRow(palList, numPalindrome, j) + transitionMatrixRows] = 1.0;
+        matrix[i][adjustForSkippedRows(palList, numPalindrome, j)] = identityMatrixMinusSTMSPOPS;
+        matrix[i][adjustForSkippedRows(palList, numPalindrome, j) + rows] = 1.0;
     	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
     	//if(i == 9) //bounds for limiting what is displayed
         	printf("matrix[%d]adjustForSkippedRows(palList, numPalindrome, %d): %d] = %f;\n", i, j, adjustForSkippedRows(palList, numPalindrome, j), identityMatrixMinusSTMSPOPS);
@@ -70,7 +70,7 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
         		printf("matrix[%d]adjustForSkippedRows(palList, numPalindrome, [swapRecord[%d][%d]): %d] = %f;\n", i, j, swapRecordIndex, adjustForSkippedRows(palList, numPalindrome, swapRecord[j][swapRecordIndex]), identityMatrixMinusSSPOPS);
         	//}
 			#endif
-        	matrix[i][findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex])] = identityMatrixMinusSSPOPS;
+        	matrix[i][adjustForSkippedRows(palList, numPalindrome, swapRecord[j][swapRecordIndex])] = identityMatrixMinusSSPOPS;
 		}
 	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
 		#ifdef ENABLEPAUSE

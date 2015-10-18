@@ -54,40 +54,37 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+#include "adjustIDsForSkippedRows.c"
 #include "arrayFactorial.c"
-#include "findMatrixRow.c"
+#include "AverageAbsorbingStateResults.c"
 #include "invertMatrix.c"
-#include "prepareFundamentalMatrix.c"
-#include "ReversedHeapsort.c"
 #include "palindromeList.c"
+#include "prepareFundamentalMatrix.c"
 #include "sanitizeSwapRecord.c"
 
 int main() {
-	const short SIZE = 26;
-	const short zerothSIZE = SIZE - 1;
     short freq[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     
-    fputs("Anagram please: ", stdout); //need a quick fix for single character entries
-    
+    fputs("Anagram please: ", stdout);
     
     short i,c,memLimit = 8, stateSize = 0;
-    short* inputPtr = (short*)malloc(sizeof(short) * memLimit);
+    short* inputState = (short*)malloc(sizeof(short) * memLimit);
     while(c != '\n'){ //input anagram of palindrome
     	c = getchar();
     	if(c >= 'a' && c <= 'z'){
     		c -= 'a';
-    		inputPtr[stateSize] = c;
+    		inputState[stateSize] = c;
     		++stateSize;
     		if(stateSize > memLimit){
     			memLimit *= 2;
-    			void* reallocResult = realloc(inputPtr, sizeof(short) * memLimit);
+    			void* reallocResult = realloc(inputState, sizeof(short) * memLimit);
     			if(!reallocResult){
     				short* temp = (short*)malloc(sizeof(short) * memLimit);
     				for(i = 0; i<stateSize; ++i)
-    					temp[i] = inputPtr[i];
-    				inputPtr = temp;
+    					temp[i] = inputState[i];
+    				inputState = temp;
 				} else
-					inputPtr = (short*) reallocResult;
+					inputState = (short*) reallocResult;
 			}
     		++freq[c];
 		}
@@ -112,23 +109,13 @@ int main() {
 					++odd;
 					newFreq[freqSize - 1] = freq[i];
 					freq[i] = freqSize - 1;
+				} else {
 					newFreq[++c] = freq[i];
 					freq[i] = c;
 				}
 			}
 		}
 		
-    	
-		int** swapRecord = initializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
-		int* palList = palindromeList(freq, freqHalf, freqSize, stateSize, numPalindrome);
-		sanitizeSwapRecord(swapRecord, palList, numPalindrome, tscs);
-		double** MarkovMatrix = prepareFundamentalMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
-		int matrixRow = findMatrixRow(palList, numPalindrome, inputStateID);
-		int *statesToTrack = &matrixRow;
-		int arraySize = 1;
-		invertMatrix(MarkovMatrix, totalStates - numPalindrome, statesToTrack, arraySize);
-		//CalculateAverageofAllExpectedStepsToAbsorbingStates();
-		//OutputResult();
 		if(odd > 1){
 	    	puts("NOT AN ANAGRAM OF A PALINDROME\n");
 		}else{
@@ -175,7 +162,21 @@ int main() {
 					systemPause();
 				#endif
 			#endif
+			
+	    	int rows = totalStates - numPalindrome;
+	    	int columns = rows * 2;
+			int* statesToTrack = &inputStateID;
+			int arraySize = 1;
+	    	
+			int* palList = palindromeList(newFreq, freqHalf, freqSize, stateSize, numPalindrome);
+			int** swapRecord = initializeSwapRecord(newFreq, freqSize, stateSize, totalStates, tscs);
+			sanitizeSwapRecord(swapRecord, totalStates, palList, numPalindrome, tscs);
+			double** MarkovMatrix = prepareFundamentalMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
+			adjustIDsForSkippedRows(palList, numPalindrome, statesToTrack, arraySize);
+			invertMatrix(MarkovMatrix, rows, columns, statesToTrack, arraySize);
+			AverageAbsorbingStateResults(MarkovMatrix, rows, columns, statesToTrack, arraySize);
+		}
 	}
     
-    return 0; //Todo List: matrix inversion, estimated step calculation: https://en.wikipedia.org/wiki/Absorbing_Markov_chain#Fundamental_matrix
+    return 0;
 }

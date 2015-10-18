@@ -11,7 +11,9 @@
 #include "initializeSwapRecord.c"
 #include "adjustForSkippedRows.c"
 
-/*	To save time, the markov matrix is initiated to I - Q, where I is the identity matrix of the transition matrix Q
+/*	To save time, the transitional matrix is initiated to I - Q, where I is the identity matrix of the transition matrix Q.
+	The transitional matrix's identity matrix is also added to the end of the matrix in order to avoid recalculating
+	the effects of skipping the palindrome states (lines 41 & 42).
 */
 
 double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, int* palList, short numPalindrome, int posSwaps){
@@ -32,22 +34,23 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
 		printf("identityMatrixMinusSSPOPS: %f\n", identityMatrixMinusSSPOPS);
 	#endif
 	
-	int transitionMatrixRows = totalStates - numPalindrome;
-	int transitionMatrixColumns = transitionMatrixRows * 2;
-	double** matrix = (double **)malloc(transitionMatrixRows * sizeof(double *));
-	matrix[0] = (double *)calloc(transitionMatrixRows * transitionMatrixColumns, sizeof(double));
-	for(i = 0; i < transitionMatrixRows; ++i)
-		matrix[i] = (matrix[0] + transitionMatrixColumns * i);
+	int rows = totalStates - numPalindrome;
+	int columns = rows * 2;
+	double** matrix = (double **)malloc(rows * sizeof(double *));
+	matrix[0] = (double *)calloc(rows * columns, sizeof(double));
+	for(i = 0; i < rows; ++i)
+		matrix[i] = (matrix[0] + columns * i);
 	
 	int j = 0;
 	short swapRecordIndex;
-	for(i = 0; i < transitionMatrixRows; ++i, ++j){
+	for(i = 0; i < rows; ++i, ++j){
     	
-        while(swapRecord[j][0] == -tscs) //if state == palindrome
+        while(swapRecord[j][0] == -tscs){ //if state == palindrome
         	++j; //move to the next state
     		#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
         		printf("swapRecord[j: %d][0]: %d == -tscs: %d\n", j, swapRecord[j][0], -tscs);
         	#endif
+        }
         
         matrix[i][adjustForSkippedRows(palList, numPalindrome, j)] = identityMatrixMinusSTMSPOPS;
         matrix[i][adjustForSkippedRows(palList, numPalindrome, j) + rows] = 1.0;

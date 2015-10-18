@@ -9,7 +9,7 @@
 	#include "./IO/systemPause.c"
 #endif
 
-invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int sttSize){
+void invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int sttSize){
 
 	#ifdef DEBUGINVERTMATRIX
 		printDoubleArrayAs2D("Fundamental matrix: ", matrix, rows, columns, 2);

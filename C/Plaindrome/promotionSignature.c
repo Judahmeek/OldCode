@@ -33,4 +33,5 @@ void promotionSignature (const short freq[], short freqSize, int result[], short
 		--remainingDigits;
 	}
 };
+
 #endif //PROMOTIONSIGNATURE

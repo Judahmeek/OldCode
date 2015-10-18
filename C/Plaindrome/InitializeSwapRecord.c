@@ -12,7 +12,6 @@
 #include "scanSwapRecord.c"
 #include "insertSwapLink.c"
 #include "bufferSignature.c"
-#include "skipNonStateChangingSwaps.c"
 
 int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
 {
@@ -78,7 +77,7 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 			for(j = 0; j < stateSize; ++j) //initialize swapState
 				swapState[j] = states[stateID][j];
 			
-			swapState[lowIndex] = states[stateID][highIndex]; //perform int
+			swapState[lowIndex] = states[stateID][highIndex];
 			swapState[highIndex] = states[stateID][lowIndex];
 			
 			swapStateBuffer = 0;

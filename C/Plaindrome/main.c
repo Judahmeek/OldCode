@@ -93,36 +93,30 @@ int main() {
 		}
     }
 	
-    short odd = 0, freqSize = 0; //test for palindrome qualities
-    for(i = 0; i<SIZE; ++i){
+    short odd = 0, freqSize = 0, oddValue; //test for palindrome qualities
+    for(i = 0; i<26; ++i){
         if(freq[i] > 0){
         	++freqSize;
-        	if(freq[i] % 2 != 0)
-        		++odd;
 		}
     }
     
-    if(odd > 1){
-    	puts("NOT AN ANAGRAM OF A PALINDROME\n");
-	}else{
-    	reversedHeapsort(freq, SIZE);
-    	int inputStateID = state2steps(freq, freqSize, inputPtr, stateSize);
-    
-    	
-    	short tscs = 0; //tscs stands for total state changing swaps
-    	for(i = 0; i < freqSize; ++i){
-    		tscs += freq[i] * (stateSize - freq[i]);
-		}
-		tscs /= 2;
+    if(freqSize < 2)
+    	puts("0.0000");
+	else{
 		
-		int totalStates = factorial(stateSize)/arrayFactorial(freq, freqSize, 0, 0);
-		int posSwaps = stateSize * (stateSize - 1) / 2;
-		
-		short freqHalf[freqSize];
-		for(i = 0; i < freqSize; ++i){
-			freqHalf[i] = freq[i] / 2;
+		short newFreq[freqSize];
+		c = -1;
+		for(i = 0; i<26; ++i){
+			if(freq[i] > 0){
+				if(freq[i] % 2 != 0){
+					++odd;
+					newFreq[freqSize - 1] = freq[i];
+					freq[i] = freqSize - 1;
+					newFreq[++c] = freq[i];
+					freq[i] = c;
+				}
+			}
 		}
-		short numPalindrome = factorial(stateSize/2)/arrayFactorial(freqHalf, freqSize, 0, 0);
 		
     	
 		int** swapRecord = initializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
@@ -135,6 +129,13 @@ int main() {
 		invertMatrix(MarkovMatrix, totalStates - numPalindrome, statesToTrack, arraySize);
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();
 		//OutputResult();
+		if(odd > 1){
+	    	puts("NOT AN ANAGRAM OF A PALINDROME\n");
+		}else{
+			for(i = 0; i<stateSize; ++i){
+				inputState[i] = freq[inputState[i]];
+			}
+			
 			#ifdef BASICS
 				printTitledShortArray("Input State: ", inputState, stateSize, 1);
 				printTitledShortArray("freq: ", freq, 26, 1);
@@ -143,9 +144,27 @@ int main() {
 					systemPause();
 				#endif
 			#endif
+			
+	    	int inputStateID = state2steps(newFreq, freqSize, inputState, stateSize);
+	    
 		    #ifdef BASICS
 				printf("inputStateID: %d\n", inputStateID);
 			#endif
+	    	
+	    	short tscs = 0; //tscs stands for total state changing swaps
+	    	for(i = 0; i < freqSize; ++i){
+	    		tscs += newFreq[i] * (stateSize - newFreq[i]);
+			}
+			tscs /= 2;
+			
+			int totalStates = factorial(stateSize)/arrayFactorial(newFreq, freqSize, 0, 0);
+			int posSwaps = stateSize * (stateSize - 1) / 2;
+			
+			short freqHalf[freqSize];
+			for(i = 0; i < freqSize; ++i){
+				freqHalf[i] = newFreq[i] / 2;
+			}
+			short numPalindrome = factorial(stateSize/2)/arrayFactorial(freqHalf, freqSize, 0, 0);
 			
 			#ifdef BASICS
 				printf("Total states: %d\n", totalStates);

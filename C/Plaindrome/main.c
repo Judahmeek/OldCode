@@ -38,13 +38,19 @@ For the last case, the answer is 59.337962..., which should be printed as 59.338
 
 */
 
+/*#define ENABLEPAUSE
 #define BASICS
-//#define DEBUGSWAPRECORD
+#define MILESTONES
+#define DEBUGSTATE2STEPS
+#define DEBUGSTEPS2STATE
+#define DEBUGSWAPRECORD
+#define DEBUGPALINDROMELIST
+#define DEBUGSANITIZESWAPRECORD
 #define DEBUGPREPAREFUNDAMENTALMATRIX
-#define DEBUGINVERTMATRIX
+#define DEBUGINVERTMATRIX*/
 #ifdef BASICS
-#include "./IO/printTitledShortArray.c"
-#include "./IO/systemPause.c"
+	#include "./IO/printTitledShortArray.c"
+	#include "./IO/systemPause.c"
 #endif
 #include <stdio.h>
 #include <stdlib.h>
@@ -102,10 +108,6 @@ int main() {
     	reversedHeapsort(freq, SIZE);
     	int inputStateID = state2steps(freq, freqSize, inputPtr, stateSize);
     
-	    #ifdef BASICS
-		printTitledShortArray("Input State: ", inputPtr, stateSize, 1);
-		printTitledShortArray("Frequencies: ", freq, freqSize, 1);
-		#endif
     	
     	short tscs = 0; //tscs stands for total state changing swaps
     	for(i = 0; i < freqSize; ++i){
@@ -122,13 +124,6 @@ int main() {
 		}
 		short numPalindrome = factorial(stateSize/2)/arrayFactorial(freqHalf, freqSize, 0, 0);
 		
-		#ifdef BASICS
-		printf("Total states: %d\n", totalStates);
-		printf("Total state changing swaps: %d\n", tscs);
-		printf("All possible swaps per state: %d\n", posSwaps);
-		printf("Number of Palindromes: %d\n", numPalindrome);
-		systemPause();
-		#endif
     	
 		int** swapRecord = initializeSwapRecord(freq, freqSize, stateSize, totalStates, tscs);
 		int* palList = palindromeList(freq, freqHalf, freqSize, stateSize, numPalindrome);
@@ -140,6 +135,27 @@ int main() {
 		invertMatrix(MarkovMatrix, totalStates - numPalindrome, statesToTrack, arraySize);
 		//CalculateAverageofAllExpectedStepsToAbsorbingStates();
 		//OutputResult();
+			#ifdef BASICS
+				printTitledShortArray("Input State: ", inputState, stateSize, 1);
+				printTitledShortArray("freq: ", freq, 26, 1);
+				printTitledShortArray("Frequencies: ", newFreq, freqSize, 1);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
+			#endif
+		    #ifdef BASICS
+				printf("inputStateID: %d\n", inputStateID);
+			#endif
+			
+			#ifdef BASICS
+				printf("Total states: %d\n", totalStates);
+				printf("Total state changing swaps: %d\n", tscs);
+				printf("All possible swaps per state: %d\n", posSwaps);
+				printf("Number of Palindromes: %d\n", numPalindrome);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
+			#endif
 	}
     
     return 0; //Todo List: matrix inversion, estimated step calculation: https://en.wikipedia.org/wiki/Absorbing_Markov_chain#Fundamental_matrix

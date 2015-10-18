@@ -2,9 +2,9 @@
 #define STATE2STEPS
 
 #ifdef DEBUGSTATE2STEPS
-#include "./IO/printShortArray.c"
-#include "./IO/printIntArray.c"
-//#include "./IO/systemPause.c"
+	#include "./IO/printTitledShortArray.c"
+	#include "./IO/printIntArray.c"
+	#include "./IO/systemPause.c"
 #endif
 
 #include "steps2state.c"
@@ -15,12 +15,11 @@ The "minimal state" is the state created by step 0. Example: Freq[2,2,2,1] => Re
 int state2steps(const short freq[], short freqSize, short state[], short stateSize){
 	
 	#ifdef DEBUGSTATE2STEPS
-	fputs("state2steps(freq: ", stdout);
-	printShortArray(freq, freqSize);
-	printf(",freqSize: %d, state: ", freqSize);
-	printShortArray(state, stateSize);
-	printf(", stateSize: %d)\n", stateSize);
-	//systemPause();
+		fputs("state2steps(freq: ", stdout);
+		printShortArray(freq, freqSize);
+		printf(",freqSize: %d, state: ", freqSize);
+		printShortArray(state, stateSize);
+		printf(", stateSize: %d)\n", stateSize);
 	#endif
 	
 	short copy[freqSize];
@@ -33,34 +32,29 @@ int state2steps(const short freq[], short freqSize, short state[], short stateSi
 	short zeroState[stateSize];
 	steps2state(freq, freqSize, zeroState, stateSize, 0);
 	
-	#ifdef DEBUGSTATE2STEPS
-	fputs("steps2state(copy: ", stdout);
-	printShortArray(copy, freqSize);
-	printf(",freqSize: %d, zeroState: ", freqSize);
-	printShortArray(zeroState, stateSize);
-	printf(", stateSize: %d)\n", stateSize);
-	//systemPause();
-	#endif
-	
 	int steps = 0;
 	short sigSize = stateSize - 1;
 	int sig[sigSize];
 	promotionSignature(copy, freqSize, sig, sigSize, 0);
 	
 	#ifdef DEBUGSTATE2STEPS
-	fputs("After initial pSig: ", stdout);
-	fputs("state2steps(copy: ", stdout);
-	printShortArray(copy, freqSize);
-	printf(",freqSize: %d, sig: ", freqSize);
-	printIntArray(sig, sigSize);
-	printf(", sigSize: %d)\n", sigSize);
-	//systemPause();
+		fputs("After initial pSig: ", stdout);
+		fputs("state2steps(copy: ", stdout);
+		printShortArray(copy, freqSize);
+		printf(",freqSize: %d, sig: ", freqSize);
+		printIntArray(sig, sigSize);
+		printf(", sigSize: %d)\n", sigSize);
 	#endif
 	
 	for(i = 0; i < sigSize;){
 		if(state[i] == zeroState[i]){
 			--copy[zeroState[++i]];
 		} else {
+			#ifdef DEBUGSTATE2STEPS
+				printTitledShortArray("state: ", state, stateSize, 1);
+				printTitledShortArray("zeroState: ", zeroState, stateSize, 1);
+				printf("%d != %d\n", state[i], zeroState[i]);
+			#endif
 			steps += sig[i];
 			++copy[zeroState[i]];
     		++zeroState[i];
@@ -71,13 +65,15 @@ int state2steps(const short freq[], short freqSize, short state[], short stateSi
 			promotionSignature(copy, freqSize, sig, sigSize, i);
 			
 			#ifdef DEBUGSTATE2STEPS
-			fputs("After following pSig: ", stdout);
-			fputs("promotionSignature(copy: ", stdout);
-			printShortArray(copy, freqSize);
-			printf(",freqSize: %d, pSig: ", freqSize);
-			printIntArray(sig, sigSize);
-			printf(", sigSize: %d, i: %d)\n", sigSize, i);
-			//systemPause();
+				fputs("After following pSig: ", stdout);
+				fputs("promotionSignature(copy: ", stdout);
+				printShortArray(copy, freqSize);
+				printf(",freqSize: %d, pSig: ", freqSize);
+				printIntArray(sig, sigSize);
+				printf(", sigSize: %d, i: %d)\n", sigSize, i);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
 			#endif
 			
 			short k = i, l, m;

@@ -1,8 +1,11 @@
 #ifdef DEBUGSWAPRECORD
-#include <stdio.h>
-#include "./IO/printTitledIntArray.c"
-#include "./IO/printTitledShortArray.c"
-#include "./IO/systemPause.c"
+	#include "./IO/printTitledIntArray.c"
+	#include "./IO/printTitledShortArray.c"
+	#include "./IO/systemPause.c"
+#endif
+#ifdef MILESTONES
+	#include "./IO/printIntArray.c"
+	#include "./IO/systemPause.c"
 #endif
 #include <stdlib.h>
 #include "state2steps.c"
@@ -13,6 +16,13 @@
 
 int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, int totalStates, int tscs)
 {
+	#ifdef DEBUGSWAPRECORD
+		fputs("initializeSwapRecord(freq: ", stdout);
+		printShortArray(freq, freqSize);
+		printf(",freqSize: %d, state: ", freqSize);
+		printf(", stateSize: %d, int totalStates, int tscs)\n\n", stateSize, totalStates, tscs);
+	#endif
+	
 	int stateID, i;
 	short sigSize = stateSize - 1;
 	short bufferSig[totalStates][sigSize];
@@ -30,7 +40,7 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 			swapRecord[stateID][i] = -1;
 		}
 		#ifdef DEBUGSWAPRECORD
-		printf("Initialized row %d\n", stateID);
+			printf("Initialized row %d\n", stateID);
 		#endif
 	}
 	
@@ -51,18 +61,19 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
     	
     	scanSwapRecord(states[stateID], stateSize, swapRecord[stateID], &swapRecordIndex, bufferSig[stateID], &lowIndex, &highIndex, tscs);
     	#ifdef DEBUGSWAPRECORD
-    	printf("\nstateID: %d state: ", stateID);
-		printShortArray(states[stateID], stateSize);
-    	printTitledIntArray("\nswapRecord: ", swapRecord[stateID], tscs, 1);
-    	printf("scan moves lowIndex to %d and highIndex to %d\n", lowIndex, highIndex);
-    	systemPause();
+	    	printf("\nstateID: %d state: ", stateID);
+			printShortArray(states[stateID], stateSize);
+	    	printTitledIntArray("\nswapRecord: ", swapRecord[stateID], tscs, 1);
+	    	printf("scan moves lowIndex to %d and highIndex to %d\n", lowIndex, highIndex);
+			#ifdef ENABLEPAUSE
+				systemPause();
+			#endif
     	#endif
     	
     	while(swapRecordIndex < tscs){
     		#ifdef DEBUGSWAPRECORD
-    		printf("\nswapRecordIndex: %d tscs: %d\n", swapRecordIndex, tscs);
-    		
-			printf("state[lowIndex]: %d != state[highIndex]: %d\n", states[stateID][lowIndex], states[stateID][highIndex]);
+	    		printf("\nswapRecordIndex: %d tscs: %d\n", swapRecordIndex, tscs);
+				printf("state[lowIndex]: %d != state[highIndex]: %d\n", states[stateID][lowIndex], states[stateID][highIndex]);
 			#endif
 			for(j = 0; j < stateSize; ++j) //initialize swapState
 				swapState[j] = states[stateID][j];
@@ -88,25 +99,27 @@ int** initializeSwapRecord(const short freq[], short freqSize, short stateSize, 
 			skipNonStateChangingSwaps(states[stateID], stateSize, &swapRecordIndex, bufferSig[stateID], &lowIndex, &highIndex);
 			
 			#ifdef DEBUGSWAPRECORD
-			printf("Increments: SDI to %d, lowIndex to %d, and highIndex to %d\n", swapRecordIndex, lowIndex, highIndex);
+				printf("Increments: SDI to %d, lowIndex to %d, and highIndex to %d\n", swapRecordIndex, lowIndex, highIndex);
 			#endif
 			scanSwapRecord(states[stateID], stateSize, swapRecord[stateID], &swapRecordIndex, bufferSig[stateID], &lowIndex, &highIndex, tscs);
 			#ifdef DEBUGSWAPRECORD
-			printf("sSR increments SDI to %d, lowIndex to %d, and highIndex to %d\n", swapRecordIndex, lowIndex, highIndex);
-			printf("swapRecord[%d]: ", stateID);
-			printIntArray(swapRecord[stateID], tscs);
-			putchar('\n');
+				printf("sSR increments SDI to %d, lowIndex to %d, and highIndex to %d\n", swapRecordIndex, lowIndex, highIndex);
+				printf("swapRecord[%d]: ", stateID);
+				printIntArray(swapRecord[stateID], tscs);
+				putchar('\n');
 			#endif
 		}
 	}
 	
-	#ifdef DEBUGSWAPRECORD
-	for(i = 0; i < totalStates; ++i){
-		printf("swapRecord[%d]: ", i);
-		printIntArray(swapRecord[i], tscs);
-		putchar('\n');
-	}
-	systemPause();
+	#ifdef MILESTONES
+		for(i = 0; i < totalStates; ++i){
+			printf("swapRecord[%d]: ", i);
+			printIntArray(swapRecord[i], tscs);
+			putchar('\n');
+		}
+		#ifdef ENABLEPAUSE
+			systemPause();
+		#endif
 	#endif
 	
 	return swapRecord;

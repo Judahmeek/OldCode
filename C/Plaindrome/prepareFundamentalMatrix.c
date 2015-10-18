@@ -1,10 +1,15 @@
 #ifdef DEBUGPREPAREFUNDAMENTALMATRIX
-#include "./IO/systemPause.c"
+	#include "./IO/systemPause.c"
+	#include "./IO/printDoubleArrayAs2D.c"
+	#include "./IO/printIntArray.c"
+#endif
+#ifdef MILESTONES
+	#include "./IO/systemPause.c"
+	#include "./IO/printDoubleArrayAs2D.c"
+	#include "./IO/printIntArray.c"
 #endif
 #include "initializeSwapRecord.c"
-#include "./IO/printDoubleArrayAs2D.c"
-#include "./IO/printIntArray.c"
-#include "findMatrixRow.c"
+#include "adjustForSkippedRows.c"
 
 /*	To save time, the markov matrix is initiated to I - Q, where I is the identity matrix of the transition matrix Q
 */
@@ -20,9 +25,11 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
 	double identityMatrixMinusSSPOPS = -singleSwapsPercentageOfPosSwaps;
 	
 	#ifdef BASICS
-	printf("swapsThatMaintainState: %d\n", swapsThatMaintainState);
-	printf("swapsThatMaintainState /  posSwaps: %f\n", stmsPercentageOfPosSwaps);
-	printf("1 / posSwaps: %f\n", singleSwapsPercentageOfPosSwaps);
+		printf("swapsThatMaintainState: %d\n", swapsThatMaintainState);
+		printf("swapsThatMaintainState /  posSwaps: %f\n", stmsPercentageOfPosSwaps);
+		printf("1 / posSwaps: %f\n", singleSwapsPercentageOfPosSwaps);
+		printf("identityMatrixMinusSTMSPOPS: %f\n", identityMatrixMinusSTMSPOPS);
+		printf("identityMatrixMinusSSPOPS: %f\n", identityMatrixMinusSSPOPS);
 	#endif
 	
 	int transitionMatrixRows = totalStates - numPalindrome;
@@ -38,12 +45,15 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
     	
         while(swapRecord[j][0] == -tscs) //if state == palindrome
         	++j; //move to the next state
+    		#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
+        		printf("swapRecord[j: %d][0]: %d == -tscs: %d\n", j, swapRecord[j][0], -tscs);
+        	#endif
         
         matrix[i][findMatrixRow(palList, numPalindrome, j)] = identityMatrixMinusSTMSPOPS;
         matrix[i][findMatrixRow(palList, numPalindrome, j) + transitionMatrixRows] = 1.0;
     	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
-    	if(i == 9) //bounds for limiting what is displayed
-        	printf("matrix[%d]findMatrixRow(palList, numPalindrome, %d): %d] = %f;\n", i, j, findMatrixRow(palList, numPalindrome, j), identityMatrixMinusSTMSPOPS);
+    	//if(i == 9) //bounds for limiting what is displayed
+        	printf("matrix[%d]adjustForSkippedRows(palList, numPalindrome, %d): %d] = %f;\n", i, j, adjustForSkippedRows(palList, numPalindrome, j), identityMatrixMinusSTMSPOPS);
     	#endif
         
 		if(swapRecord[j][0] < 0)
@@ -53,23 +63,27 @@ double ** prepareFundamentalMatrix(int** swapRecord, int totalStates, int tscs, 
 		
         for(; swapRecordIndex < tscs; ++swapRecordIndex){
         	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
-        	if(i == 0){ //bounds for limiting what is displayed
+        	//if(i == 0){ //bounds for limiting what is displayed
 				printf("swapRecord[%d]: ", j);
 				printIntArray(swapRecord[j], tscs);
 				putchar('\n');
-        		printf("matrix[%d]findMatrixRow(palList, numPalindrome, [swapRecord[%d][%d]): %d] = %f;\n", i, j, swapRecordIndex, findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex]), identityMatrixMinusSSPOPS);
-
-        	}
+        		printf("matrix[%d]adjustForSkippedRows(palList, numPalindrome, [swapRecord[%d][%d]): %d] = %f;\n", i, j, swapRecordIndex, adjustForSkippedRows(palList, numPalindrome, swapRecord[j][swapRecordIndex]), identityMatrixMinusSSPOPS);
+        	//}
 			#endif
         	matrix[i][findMatrixRow(palList, numPalindrome, swapRecord[j][swapRecordIndex])] = identityMatrixMinusSSPOPS;
 		}
 	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
-	//systemPause();
+		#ifdef ENABLEPAUSE
+			systemPause();
+		#endif
 	#endif
 	}
 	
-	#ifdef DEBUGPREPAREFUNDAMENTALMATRIX
-	printDoubleArrayAs2D("Preliminary Fundamental Matrix: ", matrix[0], transitionMatrixRows, transitionMatrixColumns, 2);
+	#ifdef MILESTONES
+		printDoubleArrayAs2D("Preliminary Fundamental Matrix: ", matrix, rows, columns, 2);
+		#ifdef ENABLEPAUSE
+			systemPause();
+		#endif
 	#endif
 	
 	return matrix;

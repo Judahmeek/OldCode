@@ -1,4 +1,17 @@
-void sanitizeSwapRecord(int** swapRecord, const int* palList, short numPalindrome, int tscs){
+#ifdef DEBUGSANITIZESWAPRECORD
+#include "./IO/printIntArray.c"
+#endif
+#ifdef MILESTONES
+#include "./IO/printIntArray.c"
+#endif
+
+void sanitizeSwapRecord(int** swapRecord, int totalStates, const int* palList, short numPalindrome, int tscs){
+	
+	#ifdef DEBUGSANITIZESWAPRECORD
+		fputs("sanitizeSwapRecord(swapRecord, palList: ", stdout);
+		printIntArray(palList, numPalindrome);
+		printf(", numPalindrome: %d)\n\n", numPalindrome, tscs);
+	#endif
 	
 	int i, k, l, m;
 	int *palindrome, *partner;
@@ -14,8 +27,8 @@ void sanitizeSwapRecord(int** swapRecord, const int* palList, short numPalindrom
 							partner[0] = -1;
 						} else {
 							partner[l] = partner[partner[0] * -1];
-							#ifdef DEBUGSWAPRECORD
-							partner[partner[0] * -1] = -1;
+							#ifdef DEBUGSANITIZESWAPRECORD
+								partner[partner[0] * -1] = -1;
 							#endif
 							--partner[0];
 						}
@@ -25,4 +38,15 @@ void sanitizeSwapRecord(int** swapRecord, const int* palList, short numPalindrom
 		}
 		palindrome[0] = -tscs;
 	}
+	#ifdef MILESTONES
+		puts("sanitized swapRecord:");
+		for(i = 0; i < totalStates; ++i){
+			printf("[%d]: ", i);
+			printIntArray(swapRecord[i], tscs);
+			putchar('\n');
+		}
+		#ifdef ENABLEPAUSE
+			systemPause();
+		#endif
+	#endif
 }

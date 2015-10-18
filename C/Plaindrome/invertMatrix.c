@@ -1,16 +1,23 @@
 #ifdef DEBUGINVERTMATRIX
-#include "./IO/printDoubleArrayAs2D.c"
-#include "./IO/printTitledIntArray.c"
-#include "./IO/systemPause.c"
+	#include "./IO/printDoubleArrayAs2D.c"
+	#include "./IO/printTitledIntArray.c"
+	#include "./IO/systemPause.c"
+#endif
+#ifdef MILESTONES
+	#include "./IO/printDoubleArrayAs2D.c"
+	#include "./IO/printTitledIntArray.c"
+	#include "./IO/systemPause.c"
 #endif
 
 invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int sttSize){
 
 	#ifdef DEBUGINVERTMATRIX
-	printDoubleArrayAs2D("Fundamental matrix: ", matrix, rows, columns, 2);
-	printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
-	systemPause();
-	putchar('\n');
+		printDoubleArrayAs2D("Fundamental matrix: ", matrix, rows, columns, 2);
+		printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
+		#ifdef ENABLEPAUSE
+			systemPause();
+		#endif
+		putchar('\n');
 	#endif
 	
 	int i, j, pivot, max, stopPivot = rows - 1, subtractor, rowAbove;
@@ -18,7 +25,7 @@ invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int
 	for (pivot = 0; pivot < stopPivot; ++pivot){
 		max = pivot;
 		#ifdef DEBUGINVERTMATRIX
-		printf("step %d\n", pivot);
+			printf("step %d\n", pivot);
 		#endif
 		
 		for(i = pivot + 1; i < rows; ++i){
@@ -28,7 +35,7 @@ invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int
 		}
 		
 		#ifdef DEBUGINVERTMATRIX
-		printf("max found: %d\n", max);
+			printf("max found: %d\n", max);
 		#endif
 		
 		for(i = 0; i < sttSize; ++i){
@@ -52,10 +59,12 @@ invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int
 		}
 		
 		#ifdef DEBUGINVERTMATRIX
-		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
-		printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
-		systemPause();
-		putchar('\n');
+			printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
+			printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
+			putchar('\n');
 		#endif
 	}
 	
@@ -75,10 +84,12 @@ invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int
 		}
 		
 		#ifdef DEBUGINVERTMATRIX
-		printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
-		printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
-		systemPause();
-		putchar('\n');
+			printDoubleArrayAs2D("Fundamental matrix after step: ", matrix, rows, columns, 2);
+			printTitledIntArray("Target states: ", statesToTrackPtr, sttSize, 1);
+				#ifdef ENABLEPAUSE
+					systemPause();
+				#endif
+			putchar('\n');
 		#endif
 
 	}
@@ -87,8 +98,21 @@ invertMatrix (double** matrix, int rows, int columns, int* statesToTrackPtr, int
 		matrix[pivot][i] /= matrix[pivot][pivot];
 	matrix[pivot][pivot] = 1;
 	
-	#ifdef DEBUGINVERTMATRIX
-	printDoubleArrayAs2D("Inverted Fundamental matrix: ", matrix, rows, columns, 2);
-	printTitledIntArray("Modified target states: ", statesToTrackPtr, sttSize, 1);
+	#ifdef MILESTONES
+		double matrixRowTotal = 0;
+		puts("Inverted Fundamental matrix: ");
+		for(i = 0; i < rows; ++i){
+			intOutput(i);
+			fputs(": ", stdout);
+			printDoubleArray (matrix[i], columns, 4);
+			for (j = rows; j < columns; ++j)
+				matrixRowTotal += matrix[i][j];
+			printf(": %f ", matrixRowTotal);
+			matrixRowTotal = 0;
+		}
+		printTitledIntArray("Modified target states: ", statesToTrackPtr, sttSize, 1);
+		#ifdef ENABLEPAUSE
+			systemPause();
+		#endif
 	#endif
 }

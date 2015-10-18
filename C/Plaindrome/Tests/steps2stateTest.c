@@ -4,10 +4,11 @@
 #include "../digitSize_i.c"
 #include "../arraySum.c"
 #include "../steps2state.c"
+#include "../systemPause.c"
 
 int main() {
-	const short freq[] = {2, 2, 2, 1};
-	short freqSize = 4;
+	const short freq[] = {2};
+	short freqSize = 1;
 	short stateSize = arraySum(freq, freqSize);
 	int uBound = factorial(stateSize)/arrayFactorial(freq, freqSize, 0, 0);
 	short result[stateSize];
@@ -19,10 +20,7 @@ int main() {
 		steps2state(freq, freqSize, result, stateSize, steps);
 		printTitledShortArray("Result: ", result, stateSize, 1);
 		if(steps % 10 == 0){
-			printf("Press enter to continue...");
-			while(input != '\n')
-    			input = getchar();
-    		input = 0;
+			systemPause();
     	}
 	}
 	#else //EXHAUSTIVESTEPS2STATEDEBUG

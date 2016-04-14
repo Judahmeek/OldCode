@@ -40,7 +40,7 @@ void AverageAbsorbingStateResults (double** matrix, int rows, int columns, int t
 	for (j = rows; j < columns; ++j)
 		total += matrix[targetState][j];
 
-	printf("End Result: %.4f", total);
+	printf("%.4f", total);
 };
 
 void invertMatrix (double** matrix, int rows, int columns, int* targetState){
@@ -393,94 +393,96 @@ void sanitizeSwapRecord(int** swapRecord, int totalStates, const int* palList, s
 };
 
 int main() {
-    
-    fputs("Anagram please: ", stdout);
-    
-    const short SIZE = 26;
-    short i,c,memLimit = 8, stateSize = 0;
-    short* freq = (short*)calloc(SIZE, sizeof(short));
-    short* inputState = (short*)malloc(sizeof(short) * memLimit);
-    while(c != '\n'){
-    	c = getchar();
-    	if(c >= 'a' && c <= 'z'){
-    		c -= 'a';
-    		inputState[stateSize] = c;
-    		++stateSize;
-    		if(stateSize > memLimit){
-    			memLimit *= 2;
-    			void* reallocResult = realloc(inputState, sizeof(short) * memLimit);
-    			if(!reallocResult){
-    				short* temp = (short*)malloc(sizeof(short) * memLimit);
-    				for(i = 0; i<stateSize; ++i)
-    					temp[i] = inputState[i];
-    				inputState = temp;
-				} else
-					inputState = (short*) reallocResult;
-			}
-    		++freq[c];
-		}
+    short cases, o;
+    scanf("%hd",&cases);
+    getchar();
+    for(o = 0; o<cases; ++o){
+        const short SIZE = 26;
+        short i,c = 0,memLimit = 8, stateSize = 0;
+        short* freq = (short*)calloc(SIZE, sizeof(short));
+        short* inputState = (short*)malloc(sizeof(short) * memLimit);
+        while(c != '\n'){
+            c = getchar();
+            if(c >= 'a' && c <= 'z'){
+                c -= 'a';
+                inputState[stateSize] = c;
+                ++stateSize;
+                if(stateSize > memLimit){
+                    memLimit *= 2;
+                    void* reallocResult = realloc(inputState, sizeof(short) * memLimit);
+                    if(!reallocResult){
+                        short* temp = (short*)malloc(sizeof(short) * memLimit);
+                        for(i = 0; i<stateSize; ++i)
+                            temp[i] = inputState[i];
+                        inputState = temp;
+                    } else
+                        inputState = (short*) reallocResult;
+                }
+                ++freq[c];
+            }
+        }
+
+        short odd = 0, freqSize = 0, oddValue;
+        for(i = 0; i<SIZE; ++i){
+            if(freq[i] > 0){
+                ++freqSize;
+            }
+        }
+
+        if(freqSize < 2)
+            puts("0.0000");
+        else{
+
+            short newFreq[freqSize];
+            c = -1;
+            for(i = 0; i<SIZE; ++i){
+                if(freq[i] > 0){
+                    if(freq[i] % 2 != 0){
+                        ++odd;
+                        newFreq[freqSize - 1] = freq[i];
+                        freq[i] = freqSize - 1;
+                    } else {
+                        newFreq[++c] = freq[i];
+                        freq[i] = c;
+                    }
+                }
+            }
+
+            for(i = 0; i<stateSize; ++i){
+                inputState[i] = freq[inputState[i]];
+            }
+
+            free(freq);
+
+            int inputStateID = state2steps(newFreq, freqSize, inputState, stateSize);
+
+            short tscs = 0;
+            for(i = 0; i < freqSize; ++i){
+                tscs += newFreq[i] * (stateSize - newFreq[i]);
+            }
+            tscs /= 2;
+
+            int totalStates = factorial(stateSize)/arrayFactorial(newFreq, freqSize, 0, 0);
+            int posSwaps = stateSize * (stateSize - 1) / 2;
+
+            short freqHalf[freqSize];
+            for(i = 0; i < freqSize; ++i){
+                freqHalf[i] = newFreq[i] / 2;
+            }
+            short numPalindrome = factorial(stateSize/2)/arrayFactorial(freqHalf, freqSize, 0, 0);
+
+            int rows = totalStates - numPalindrome;
+            int columns = rows * 2;
+
+            int* palList = palindromeList(newFreq, freqHalf, freqSize, stateSize, numPalindrome);
+            int** swapRecord = initializeSwapRecord(newFreq, freqSize, stateSize, totalStates, tscs);
+            sanitizeSwapRecord(swapRecord, totalStates, palList, numPalindrome, tscs);
+            double** MarkovMatrix = prepareFundamentalMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
+            inputStateID = adjustForSkippedRows(palList, numPalindrome, inputStateID);
+            invertMatrix(MarkovMatrix, rows, columns, &inputStateID);
+            AverageAbsorbingStateResults(MarkovMatrix, rows, columns, inputStateID);
+        }
     }
-	
-    short odd = 0, freqSize = 0, oddValue; //test for palindrome qualities
-    for(i = 0; i<SIZE; ++i){
-        if(freq[i] > 0){
-        	++freqSize;
-		}
-    }
-    
-    if(freqSize < 2)
-    	puts("0.0000");
-	else{
-		
-		short newFreq[freqSize];
-		c = -1;
-		for(i = 0; i<SIZE; ++i){
-			if(freq[i] > 0){
-				if(freq[i] % 2 != 0){
-					++odd;
-					newFreq[freqSize - 1] = freq[i];
-					freq[i] = freqSize - 1;
-				} else {
-					newFreq[++c] = freq[i];
-					freq[i] = c;
-				}
-			}
-		}
-		
-		for(i = 0; i<stateSize; ++i){
-			inputState[i] = freq[inputState[i]];
-		}
-		
-		free(freq);
-		
-    	int inputStateID = state2steps(newFreq, freqSize, inputState, stateSize);
-    	
-    	short tscs = 0;
-    	for(i = 0; i < freqSize; ++i){
-    		tscs += newFreq[i] * (stateSize - newFreq[i]);
-		}
-		tscs /= 2;
-		
-		int totalStates = factorial(stateSize)/arrayFactorial(newFreq, freqSize, 0, 0);
-		int posSwaps = stateSize * (stateSize - 1) / 2;
-		
-		short freqHalf[freqSize];
-		for(i = 0; i < freqSize; ++i){
-			freqHalf[i] = newFreq[i] / 2;
-		}
-		short numPalindrome = factorial(stateSize/2)/arrayFactorial(freqHalf, freqSize, 0, 0);
-		
-    	int rows = totalStates - numPalindrome;
-    	int columns = rows * 2;
-    	
-		int* palList = palindromeList(newFreq, freqHalf, freqSize, stateSize, numPalindrome);
-		int** swapRecord = initializeSwapRecord(newFreq, freqSize, stateSize, totalStates, tscs);
-		sanitizeSwapRecord(swapRecord, totalStates, palList, numPalindrome, tscs);
-		double** MarkovMatrix = prepareFundamentalMatrix(swapRecord, totalStates, tscs, palList, numPalindrome, posSwaps);
-		inputStateID = adjustForSkippedRows(palList, numPalindrome, inputStateID);
-		invertMatrix(MarkovMatrix, rows, columns, &inputStateID);
-		AverageAbsorbingStateResults(MarkovMatrix, rows, columns, inputStateID);
-	}
-    
     return 0;
 }
+

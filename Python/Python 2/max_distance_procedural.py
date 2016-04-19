@@ -16,22 +16,15 @@ from itertools import izip
 
 class Node:
     Branch = namedtuple("Branch", ["neighbor", "density_at_degree", "empty"])
-
-    @classmethod #I would have used @property here,
-    #but found out that doesn't work. According to StackOverflow,
-    #getting a @property effect for class variables is complicated. xD
-    def max_diameter(cls, value):
-        cls._max_diameter = value
-        cls._max_radius = (value + 1) / 2
-        cls._mr_minus_one = cls._max_radius - 1
     
     @classmethod
     def link(cls, nodes):
         nodes[0].add_connection(nodes[1])
         nodes[1].add_connection(nodes[0])
         
-    def __init__(self, name):
+    def __init__(self, tree, name):
         self.name = name
+        self.tree = tree
         self.connections = []
         self._density = []
         self.empty_paths = 0
@@ -59,17 +52,17 @@ class Node:
 
     @classmethod
     def density(cls, node):
-        if cls._max_diameter % 2 == 0:
+        if node.tree.max_diameter % 2 == 0:
             return sum(node._density) + 1 + len(node.connections)
-        return sum(node._density[:cls._mr_minus_one - 1])\
+        return sum(node._density[:node.tree._mr_minus_one - 1])\
                 + 1 + len(node.connections) + max(x.density_at_degree[-1]\
-                if len(x.density_at_degree) == cls._mr_minus_one\
+                if len(x.density_at_degree) == node.tree.mr_minus_one\
                 else 0 for x in node.connections)
 
     def density_as_branch(self, target):
         if len(self.connections) == 1:
             return []
-        as_branch = [0] * min(len(self._density) + 1, Node._mr_minus_one)
+        as_branch = [0] * min(len(self._density) + 1, self.tree.mr_minus_one)
         as_branch[0] = len(self.connections) - 1
         for i in xrange(1, len(as_branch)):
             as_branch[i] = self._density[i - 1]
@@ -84,13 +77,83 @@ class Node:
                 break
         return as_branch
 
-nodes = {}
+class Tree:
+
+    def __init__(self):
+        self.nodes = {}
+        self.dirty = False
+    
+    def set_max_distance(self, value):
+        self.max_diameter = value
+        self.max_radius = (value + 1) / 2
+        self.mr_minus_one = cls._max_radius - 1
+
+    def ensure_node(self, value):
+        if value not in self.nodes:
+            self.nodes[value] = Node(self, value)
+        return self.nodes[value]
+
+    def clean_nodes(self):
+        for node in nodes:
+            for index, link in enumerate(node.connections)
+                node.connections[index] = Node.Branch(link.neighbor, [], True)
+            node.empty_paths = len(node.connections)
+        self.dirty = False
+
+    def valid_centers(self, max_distance):
+        if max_distance == 2:
+            return self.nodes.values()
+
+        if self.dirty:
+            self.clean_nodes()
+        self.dirty = True
+        self.set_max_distance(max_distance)
+        
+        def fast_del(llst, i):
+            llst[i], llst[-1] = llst[-1], llst[i]
+            llst.pop()
+
+        completed_nodes, merged_paths = [], []
+        paths = [node for node in nodes.values() if len(node.connections) == 1]
+
+        while len(completed_nodes) == 0:
+            for path_index,start in enumerate(paths):
+                next_node = start.empty_path()
+                start_density = start.density_as_branch(next_node)
+                next_node.set_branch_density(start, start_density)
+                if next_node.empty_paths > 1:
+                    merged_paths.append(path_index)
+                elif next_node.empty_paths == 0:
+                    completed_nodes.append(next_node)
+                    break
+                else:
+                    paths[path_index] = next_node
+            for i in xrange(len(merged_paths)):
+                fast_del(paths, merged_paths.pop())
+
+        Path = namedtuple("Path", ["current", "last"])
+        paths = deque([Path(completed_nodes[0], None)])
+
+        while len(paths) > 0:
+            path = paths.popleft()
+            for link in path.current.connections:
+                if link.neighbor == path.last or len(link.neighbor._density) < self.mr_minus_one:
+                    continue
+                link.neighbor.set_branch_density(path.current, path.current.density_as_branch(link.neighbor))
+                paths.append(Path(link.neighbor, path.current))
+                completed_nodes.append(link.neighbor)
+        return completed_nodes
+
+        
 '''Hackerrank code
 vertices, max_diameter = map(int, raw_input().split())
 if max_distance == 0:
     return nodes
 if max_distance == 1:
     return nodes - 1
+
+for i in xrange(nodes - 1):
+    Node.link(map(tree.ensure_node, raw_input().split()))
 '''
 
 edges = [[1, 2],[1, 3],[1, 4],[1, 5],[1, 6],[7, 2],[8, 2],[9, 2],[3, 10],
@@ -98,63 +161,12 @@ edges = [[1, 2],[1, 3],[1, 4],[1, 5],[1, 6],[7, 2],[8, 2],[9, 2],[3, 10],
 [11, 21],[13, 22],[13, 23],[13, 24],[13, 25],[13, 26],[14, 27],[14, 28],[14, 29],
 [15, 30],[15, 31],[31, 36],[31, 37],[12, 32],[12, 33],[12, 34],[35, 26]]
 
-Node.max_diameter(3)
-
-def ensure_node(value):
-    if value not in nodes:
-        nodes[value] = Node(value)
-    return nodes[value]
-
-'''Hackerrank code
-for i in xrange(nodes - 1):
-    Node.link(map(ensure_node, raw_input().split()))
-'''
-
 for edge in edges:
-    Node.link(map(ensure_node, edge))
+    Node.link(map(tree.ensure_node, edge))
 
-if Node._max_diameter == 2:
-    print vertices - max(len(node.connections) for node in nodes.values())
-
-def toss(seq, i):
-    seq[i], seq[-1] = seq[-1], seq[i]
-    seq.pop()
-
-completed_nodes, merged_paths = [], []
-paths = [node for node in nodes.values() if len(node.connections) == 1]
-
-while len(completed_nodes) == 0:
-    for path_index,start in enumerate(paths):
-        next_node = start.empty_path()
-        start_density = start.density_as_branch(next_node)
-        next_node.set_branch_density(start, start_density)
-        if next_node.empty_paths > 1:
-            merged_paths.append(path_index)
-        elif next_node.empty_paths == 0:
-            completed_nodes.append(next_node)
-        else:
-            paths[path_index] = next_node
-    for i in xrange(len(merged_paths)):
-        toss(paths, merged_paths.pop())
-
-Path = namedtuple("Path", ["current", "last"])
-
-if len(completed_nodes) == 2:
-    paths = deque([Path(completed_nodes[0], completed_nodes[1]),
-                  Path(completed_nodes[1], completed_nodes[0])])
-else:
-    paths = deque([Path(completed_nodes[0], None)])
-
-while len(paths) > 0:
-    path = paths.popleft()
-    for link in path.current.connections:
-        if link.neighbor == path.last or len(link.neighbor._density) < Node._mr_minus_one:
-            continue
-        link.neighbor.set_branch_density(path.current, path.current.density_as_branch(link.neighbor))
-        paths.append(Path(link.neighbor, path.current))
-        completed_nodes.append(link.neighbor)
+tree = Tree()
 
 '''Hackerrank code
-print vertices - max(Node.density(node) for node in completed_nodes)
-#to get best_center: max(completed_nodes, key=Node.density)
+print len(tree.nodes) - max(Node.density(node) for node in tree.valid_centers(max_distance))
+#to get the center node: max(tree.valid_centers(max_distance), key=Node.density)
 '''

@@ -1,11 +1,16 @@
-'''
+'''By finding the center node(s) of the tree, this solution limits density calculations to nodes that are at least max_distance
+away from the farthest leaf within the same branch. However, new queries with updated max_distances are unable to take advantage
+of the results of previous node density calculations.
+
 https://www.hackerrank.com/challenges/far-vertices
 
-You are given a tree that has N vertices and N-1 edges. Your task is to mark as small number of vertices as possible, such that, the maximum distance between two unmarked vertices is less than or equal to K. Output this value. Distance between two vertices i and j is defined as the minimum number of edges you have to pass in order to reach vertex i from vertex j.
+You are given a tree that has N vertices and N-1 edges. Your task is to mark as small number of vertices as possible, such that,
+the maximum distance between two unmarked vertices is less than or equal to K. Output this value. Distance between two vertices
+i and j is defined as the minimum number of edges you have to pass in order to reach vertex i from vertex j.
 
 Input Format 
-The first line of input contains two integers N and K. The next N-1 lines contain two integers (ui,vi) each, where 1 <= ui,vi <= N. Each of these lines specifies an edge. 
-N is no more than 100. K is less than N.
+The first line of input contains two integers N and K. The next N-1 lines contain two integers (ui,vi) each, where 1 <= ui,vi <= N.
+Each of these lines specifies an edge. N is no more than 100. K is less than N.
 
 Output Format 
 Print an integer that denotes the result of the test.

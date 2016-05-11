@@ -59,7 +59,7 @@ class Node:
     def density(cls, node):
         if node.tree.max_diameter % 2 == 0:
             return sum(node._density) + 1 + len(node.connections)
-        return sum(node._density[:node.tree._mr_minus_one - 1])\
+        return sum(node._density[:node.tree.mr_minus_one - 1])\
                 + 1 + len(node.connections) + max(x.density_at_degree[-1]\
                 if len(x.density_at_degree) == node.tree.mr_minus_one\
                 else 0 for x in node.connections)
@@ -91,7 +91,7 @@ class Tree:
     def set_max_distance(self, value):
         self.max_diameter = value
         self.max_radius = (value + 1) / 2
-        self.mr_minus_one = cls._max_radius - 1
+        self.mr_minus_one = self.max_radius - 1
 
     def ensure_node(self, value):
         if value not in self.nodes:
@@ -99,10 +99,12 @@ class Tree:
         return self.nodes[value]
 
     def clean_nodes(self):
-        for node in nodes:
-            for index, link in enumerate(node.connections)
+        for key in self.nodes:
+            node = self.nodes[key]
+            for index, link in enumerate(node.connections):
                 node.connections[index] = Node.Branch(link.neighbor, [], True)
             node.empty_paths = len(node.connections)
+            node._density = []
         self.dirty = False
 
     def valid_centers(self, max_distance):
@@ -119,7 +121,7 @@ class Tree:
             llst.pop()
 
         completed_nodes, merged_paths = [], []
-        paths = [node for node in nodes.values() if len(node.connections) == 1]
+        paths = [node for node in self.nodes.values() if len(node.connections) == 1]
 
         while len(completed_nodes) == 0:
             for path_index,start in enumerate(paths):
@@ -151,27 +153,24 @@ class Tree:
 
         
 '''Hackerrank code
-vertices, max_diameter = map(int, raw_input().split())
+vertices, max_distance = map(int, raw_input().split())
 if max_distance == 0:
-    return nodes
-if max_distance == 1:
-    return nodes - 1
-
-for i in xrange(nodes - 1):
-    Node.link(map(tree.ensure_node, raw_input().split()))
+    print vertices - 1
+elif max_distance == 1:
+    print vertices - 2
+else:
+    tree = Tree()
+    for i in xrange(vertices - 1):
+        Node.link(map(tree.ensure_node, raw_input().split()))
+    print len(tree.nodes) - max(Node.density(node) for node in tree.valid_centers(max_distance))
 '''
-
-edges = [[1, 2],[1, 3],[1, 4],[1, 5],[1, 6],[7, 2],[8, 2],[9, 2],[3, 10],
-[3, 11],[4, 12],[4, 13],[14, 5],[15, 6],[16, 7],[17, 7],[18, 8],[19, 9],[10, 20],
-[11, 21],[13, 22],[13, 23],[13, 24],[13, 25],[13, 26],[14, 27],[14, 28],[14, 29],
-[15, 30],[15, 31],[31, 36],[31, 37],[12, 32],[12, 33],[12, 34],[35, 26]]
-
-for edge in edges:
-    Node.link(map(tree.ensure_node, edge))
+'''Idle test code'''
+edges = [['78', '17'], ['6', '94'], ['1', '21'], ['50', '20'], ['2', '52'], ['27', '51'], ['9', '8'], ['63', '9'], ['17', '79'], ['56', '70'], ['57', '96'], ['37', '61'], ['98', '57'], ['82', '23'], ['39', '65'], ['9', '81'], ['63', '88'], ['47', '24'], ['60', '64'], ['85', '37'], ['37', '99'], ['16', '36'], ['48', '89'], ['41', '51'], ['19', '82'], ['94', '78'], ['86', '22'], ['94', '42'], ['65', '72'], ['20', '49'], ['33', '66'], ['93', '14'], ['1', '71'], ['53', '91'], ['86', '45'], ['82', '58'], ['23', '13'], ['12', '34'], ['4', '5'], ['76', '35'], ['60', '66'], ['8', '26'], ['39', '92'], ['39', '32'], ['46', '10'], ['45', '57'], ['73', '52'], ['64', '74'], ['67', '30'], ['80', '83'], ['46', '97'], ['50', '65'], ['21', '17'], ['25', '60'], ['90', '84'], ['2', '94'], ['11', '92'], ['44', '81'], ['47', '31'], ['21', '3'], ['88', '12'], ['27', '43'], ['27', '56'], ['46', '52'], ['17', '62'], ['39', '69'], ['28', '13'], ['16', '90'], ['4', '59'], ['38', '18'], ['7', '47'], ['81', '15'], ['76', '19'], ['7', '68'], ['58', '77'], ['6', '67'], ['4', '68'], ['83', '95'], ['87', '20'], ['71', '99'], ['30', '36'], ['27', '18'], ['96', '53'], ['50', '40'], ['55', '44'], ['10', '64'], ['54', '53'], ['41', '9'], ['7', '48'], ['29', '40'], ['93', '31'], ['77', '69'], ['60', '100'], ['48', '18'], ['95', '11'], ['35', '46'], ['4', '1'], ['75', '58'], ['53', '62']]
+max_distance = 25
 
 tree = Tree()
-
-'''Hackerrank code
+for edge in edges:
+    Node.link(map(tree.ensure_node, edge))
 print len(tree.nodes) - max(Node.density(node) for node in tree.valid_centers(max_distance))
 #to get the center node: max(tree.valid_centers(max_distance), key=Node.density)
-'''
+
